@@ -1,0 +1,15 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "armoredarsenal:mark_15/outer"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "armoredarsenal:mark_15/inner"
+      }
+    ]
+  }
+}
+

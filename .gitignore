@@ -1,0 +1,15 @@
+.gradle/
+.gradle-local/
+.jdk/
+build/
+run/
+out/
+*.iml
+.idea/
+.classpath
+.project
+.settings/
+hs_err_pid*
+replay_pid*
+logs/
+download-site/

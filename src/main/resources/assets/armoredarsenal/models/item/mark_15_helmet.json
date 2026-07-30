@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "armoredarsenal:item/mark_15_helmet"
+  }
+}
+

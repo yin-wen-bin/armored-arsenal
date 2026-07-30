@@ -1,0 +1,55 @@
+package com.ethan.armoredarsenal.client;
+
+import com.ethan.armoredarsenal.ArmoredArsenal;
+import com.ethan.armoredarsenal.client.screen.CreativeSupplyScreen;
+import com.ethan.armoredarsenal.client.screen.GunSelectorScreen;
+import com.ethan.armoredarsenal.client.screen.SuitSelectorScreen;
+import com.ethan.armoredarsenal.registry.ModMenus;
+import com.mojang.brigadier.arguments.StringArgumentType;
+import net.minecraft.client.Minecraft;
+import net.minecraft.commands.Commands;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.RegisterClientCommandsEvent;
+import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.client.event.RenderPlayerEvent;
+import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
+
+@EventBusSubscriber(modid = ArmoredArsenal.MOD_ID, value = Dist.CLIENT)
+public final class ClientEvents {
+    @SubscribeEvent
+    public static void registerScreens(RegisterMenuScreensEvent event) {
+        event.register(ModMenus.SUIT_SELECTOR.get(), SuitSelectorScreen::new);
+        event.register(ModMenus.GUN_SELECTOR.get(), GunSelectorScreen::new);
+        event.register(ModMenus.CREATIVE_SUPPLY.get(), CreativeSupplyScreen::new);
+    }
+
+    @SubscribeEvent
+    public static void registerGuiLayers(RegisterGuiLayersEvent event) {
+        event.registerAbove(VanillaGuiLayers.SELECTED_ITEM_NAME, ArmoredArsenal.id("suit_hud"), new SuitHudLayer());
+    }
+
+    @SubscribeEvent
+    public static void registerClientCommands(RegisterClientCommandsEvent event) {
+        event.getDispatcher().register(Commands.literal("fill")
+                .then(Commands.argument("block", StringArgumentType.word())
+                        .executes(context -> {
+                            Minecraft minecraft = Minecraft.getInstance();
+                            if (minecraft.player == null) {
+                                return 0;
+                            }
+
+                            String block = StringArgumentType.getString(context, "block");
+                            minecraft.player.connection.sendCommand("we fill " + block);
+                            return 1;
+                        })));
+    }
+    @SubscribeEvent
+    public static void renderTransformedPlayer(RenderPlayerEvent.Pre<?> event) {
+        ClientTransformationState.render(event);
+    }
+
+    private ClientEvents() {}
+}

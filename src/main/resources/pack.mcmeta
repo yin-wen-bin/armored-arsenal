@@ -1,0 +1,10 @@
+{
+  "pack": {
+    "description": "Armored Arsenal resources",
+    "pack_format": 71,
+    "supported_formats": {
+      "min_format": 64,
+      "max_format": 71
+    }
+  }
+}
