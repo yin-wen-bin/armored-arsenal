@@ -147,9 +147,18 @@ public final class InstructionBook {
                         /transform warden gives massive strength and health.
 
                         Use any living mob name.
+                        As a Warden, aim at a target within 20 blocks and type /power or /sonicboom.
                         Type /transform clear to return to normal.
                         """),
                 page("""
+                        Buildable End Portal
+
+                        Make a flat 5 x 5 obsidian ring with an empty 3 x 3 center.
+
+                        Right-click any obsidian in the ring while holding an Eye of Ender.
+
+                        Enter the portal to reach the main End island.
+                        """),                page("""
                         Material Golems
 
                         Build the normal iron golem shape, but use four matching blocks instead of iron.

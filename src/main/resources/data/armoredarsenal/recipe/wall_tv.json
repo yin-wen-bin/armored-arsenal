@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": ["BBB","BGB","BRB"],
+  "key": {
+    "B": "minecraft:black_concrete",
+    "G": "minecraft:glass_pane",
+    "R": "minecraft:redstone"
+  },
+  "result": {"id":"armoredarsenal:wall_tv","count":1}
+}

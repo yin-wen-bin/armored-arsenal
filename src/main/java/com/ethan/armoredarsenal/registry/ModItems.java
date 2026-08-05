@@ -5,6 +5,7 @@ import com.ethan.armoredarsenal.content.ArmoredArmorMaterials;
 import com.ethan.armoredarsenal.content.LaserWeaponItem;
 import com.ethan.armoredarsenal.content.WeaponProfile;
 import com.ethan.armoredarsenal.content.WaterFloodTntItem;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.equipment.ArmorType;
 import net.neoforged.bus.api.IEventBus;
@@ -41,6 +42,8 @@ public final class ModItems {
             properties -> new LaserWeaponItem(properties.stacksTo(1).durability(720), WeaponProfile.CHARGED_SNIPER));
     public static final DeferredItem<Item> WATER_FLOOD_TNT = ITEMS.registerItem(
             "water_flood_tnt", properties -> new WaterFloodTntItem(properties.stacksTo(16)));
+    public static final DeferredItem<BlockItem> COUCH = ITEMS.registerSimpleBlockItem("couch", ModBlocks.COUCH);
+    public static final DeferredItem<BlockItem> WALL_TV = ITEMS.registerSimpleBlockItem("wall_tv", ModBlocks.WALL_TV);
 
     public static void register(IEventBus bus) {
         ITEMS.register(bus);

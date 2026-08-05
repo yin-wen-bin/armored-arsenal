@@ -59,6 +59,8 @@ public final class MenuActions {
                 equipMark15(player);
                 handleGunButton(player, GunSelectorMenu.GIVE_ALL);
                 give(player, ModItems.WATER_FLOOD_TNT.get());
+                give(player, ModItems.COUCH.get());
+                give(player, ModItems.WALL_TV.get());
                 giveInstructionBook(player);
             }
             case CreativeSupplyMenu.SPAWN_EGGS -> giveMany(player,

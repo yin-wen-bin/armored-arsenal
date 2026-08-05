@@ -25,6 +25,8 @@ Download the latest mod and friend installation pack from [GitHub Releases](http
 - `/worldedit clear` or `/we clear`: clears the saved selection.
 - `/transform <mob>`: transforms your visible model and powers to match any living mob, such as `/transform blaze`, `/transform dolphin`, or `/transform minecraft:warden`.
 - `/transform clear`: returns you to normal.
+- Buildable End portal: make a flat 5 x 5 obsidian ring with an empty 3 x 3 center, then right-click the obsidian with an Eye of Ender. Entering it sends you to the main End island.
+- `/power` or `/sonicboom`: fires Sonic Boom at the target you are aiming at while transformed into a Warden.
 - Water Flood TNT: right-click a block to prime it. After four seconds it fills a bounded 11-block-wide, three-block-deep pool area without breaking solid blocks.
 - Material golems: build the normal iron golem T shape with four matching blocks, then place a carved pumpkin or jack o lantern on top. Four bedrock blocks make a Bedrock Golem.
 

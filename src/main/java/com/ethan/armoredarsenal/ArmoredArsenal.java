@@ -3,11 +3,16 @@ package com.ethan.armoredarsenal;
 import com.ethan.armoredarsenal.client.ClientTransformationState;
 import com.ethan.armoredarsenal.network.TransformationPayload;
 import com.ethan.armoredarsenal.registry.ModCreativeTabs;
+import com.ethan.armoredarsenal.registry.ModBlocks;
 import com.ethan.armoredarsenal.registry.ModItems;
 import com.ethan.armoredarsenal.registry.ModMenus;
 import com.ethan.armoredarsenal.server.ArmoredCommands;
 import com.ethan.armoredarsenal.server.ArmoredEvents;
+import com.ethan.armoredarsenal.server.BuildableEndPortalHandler;
+import com.ethan.armoredarsenal.server.CouchSittingHandler;
+import com.ethan.armoredarsenal.server.DelayedMinecartHandler;
 import com.ethan.armoredarsenal.server.MaterialGolemHandler;
+import com.ethan.armoredarsenal.server.VillagePopulationHandler;
 import com.ethan.armoredarsenal.server.WorldEditTools;
 import com.ethan.armoredarsenal.server.WaterFloodTntHandler;
 import net.minecraft.resources.Identifier;
@@ -21,6 +26,7 @@ public final class ArmoredArsenal {
     public static final String MOD_ID = "armoredarsenal";
 
     public ArmoredArsenal(IEventBus modBus) {
+        ModBlocks.register(modBus);
         ModItems.register(modBus);
         ModMenus.register(modBus);
         ModCreativeTabs.register(modBus);
@@ -31,6 +37,11 @@ public final class ArmoredArsenal {
         NeoForge.EVENT_BUS.addListener(ArmoredEvents::playerTick);
         NeoForge.EVENT_BUS.addListener(ArmoredEvents::livingFall);
         NeoForge.EVENT_BUS.addListener(MaterialGolemHandler::blockPlaced);
+        NeoForge.EVENT_BUS.addListener(BuildableEndPortalHandler::rightClickBlock);
+        NeoForge.EVENT_BUS.addListener(CouchSittingHandler::rightClickBlock);
+        NeoForge.EVENT_BUS.addListener(CouchSittingHandler::beforeEntityTick);
+        NeoForge.EVENT_BUS.addListener(DelayedMinecartHandler::beforeEntityTick);
+        NeoForge.EVENT_BUS.addListener(VillagePopulationHandler::beforeEntityTick);
         NeoForge.EVENT_BUS.addListener(WorldEditTools::command);
         NeoForge.EVENT_BUS.addListener(WorldEditTools::rightClickBlock);
         NeoForge.EVENT_BUS.addListener(WorldEditTools::leftClickBlock);

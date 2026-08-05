@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": {"model":"armoredarsenal:block/wall_tv"},
+    "facing=east": {"model":"armoredarsenal:block/wall_tv","y":90},
+    "facing=south": {"model":"armoredarsenal:block/wall_tv","y":180},
+    "facing=west": {"model":"armoredarsenal:block/wall_tv","y":270}
+  }
+}

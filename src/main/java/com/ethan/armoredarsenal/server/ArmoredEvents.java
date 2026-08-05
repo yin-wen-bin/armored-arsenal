@@ -7,8 +7,10 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 public final class ArmoredEvents {
     public static void playerTick(PlayerTickEvent.Post event) {
         if (event.getEntity() instanceof ServerPlayer player) {
+            player.seenCredits = true;
             SuitPowerHandler.tick(player);
             TransformationHandler.tick(player);
+            VillagePopulationHandler.tick(player);
         }
     }
 

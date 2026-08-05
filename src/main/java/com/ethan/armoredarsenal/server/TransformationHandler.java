@@ -4,15 +4,22 @@ import com.ethan.armoredarsenal.network.TransformationPayload;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.core.Holder;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -22,10 +29,13 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public final class TransformationHandler {
     private static final String DATA_KEY = "ArmoredArsenalTransformation";
+    private static final Map<UUID, Long> POWER_COOLDOWNS = new HashMap<>();
     private static final SuggestionProvider<CommandSourceStack> MOB_SUGGESTIONS = (context, builder) ->
             SharedSuggestionProvider.suggest(BuiltInRegistries.ENTITY_TYPE.keySet().stream().map(Identifier::toString), builder);
 
@@ -36,6 +46,63 @@ public final class TransformationHandler {
                 .then(Commands.argument("mob", StringArgumentType.word())
                         .suggests(MOB_SUGGESTIONS)
                         .executes(context -> transform(context.getSource().getPlayerOrException(), StringArgumentType.getString(context, "mob")))));
+        dispatcher.register(Commands.literal("power")
+                .executes(context -> usePower(context.getSource().getPlayerOrException())));
+        dispatcher.register(Commands.literal("sonicboom")
+                .executes(context -> usePower(context.getSource().getPlayerOrException())));
+    }
+
+    private static int usePower(ServerPlayer player) {
+        String selected = player.getPersistentData().getString(DATA_KEY).orElse("");
+        if (!selected.endsWith(":warden")) {
+            player.sendSystemMessage(Component.literal("Transform into a Warden before using Sonic Boom."), true);
+            return 0;
+        }
+
+        long now = player.level().getGameTime();
+        long readyAt = POWER_COOLDOWNS.getOrDefault(player.getUUID(), 0L);
+        if (now < readyAt) {
+            player.sendSystemMessage(Component.literal("Sonic Boom is recharging."), true);
+            return 0;
+        }
+
+        Vec3 start = player.getEyePosition();
+        Vec3 end = start.add(player.getLookAngle().normalize().scale(20.0));
+        Optional<LivingEntity> target = findSonicTarget(player, start, end);
+        if (target.isEmpty()) {
+            player.sendSystemMessage(Component.literal("Aim at a mob or player within 20 blocks."), true);
+            return 0;
+        }
+
+        POWER_COOLDOWNS.put(player.getUUID(), now + 40L);
+        LivingEntity victim = target.get();
+        Vec3 delta = victim.getEyePosition().subtract(start);
+        Vec3 direction = delta.normalize();
+        int steps = (int) Math.floor(delta.length()) + 7;
+        for (int i = 1; i < steps; i++) {
+            Vec3 particle = start.add(direction.scale(i));
+            player.level().sendParticles(
+                    ParticleTypes.SONIC_BOOM, particle.x, particle.y, particle.z, 1, 0.0, 0.0, 0.0, 0.0);
+        }
+        player.playSound(SoundEvents.WARDEN_SONIC_BOOM, 3.0F, 1.0F);
+        if (victim.hurtServer(player.level(), player.damageSources().sonicBoom(player), 10.0F)) {
+            double resistance = victim.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE);
+            victim.push(
+                    direction.x * 2.5 * (1.0 - resistance),
+                    direction.y * 0.5 * (1.0 - resistance),
+                    direction.z * 2.5 * (1.0 - resistance));
+        }
+        return 1;
+    }
+
+    private static Optional<LivingEntity> findSonicTarget(ServerPlayer player, Vec3 start, Vec3 end) {
+        Vec3 movement = end.subtract(start);
+        AABB search = player.getBoundingBox().expandTowards(movement).inflate(1.5);
+        return player.level().getEntitiesOfClass(
+                        LivingEntity.class, search, entity -> entity != player && entity.isPickable())
+                .stream()
+                .filter(entity -> entity.getBoundingBox().inflate(0.6).clip(start, end).isPresent())
+                .min(Comparator.comparingDouble(entity -> start.distanceToSqr(entity.getEyePosition())));
     }
 
     public static void tick(ServerPlayer player) {
@@ -100,9 +167,15 @@ public final class TransformationHandler {
             if (sample != null) sample.discard();
             return;
         }
-        double health = living.getAttributeValue(Attributes.MAX_HEALTH);
-        double damage = living.getAttributeValue(Attributes.ATTACK_DAMAGE);
-        double speed = living.getAttributeValue(Attributes.MOVEMENT_SPEED);
+        double health = living.getAttribute(Attributes.MAX_HEALTH) == null
+                ? 20.0
+                : living.getAttributeValue(Attributes.MAX_HEALTH);
+        double damage = living.getAttribute(Attributes.ATTACK_DAMAGE) == null
+                ? 2.0
+                : living.getAttributeValue(Attributes.ATTACK_DAMAGE);
+        double speed = living.getAttribute(Attributes.MOVEMENT_SPEED) == null
+                ? 0.1
+                : living.getAttributeValue(Attributes.MOVEMENT_SPEED);
         sample.discard();
 
         addEffect(player, MobEffects.HEALTH_BOOST, amplifier((health - 20.0) / 4.0, 4));
