@@ -1,1 +1,37 @@
-{"replace":false,"values":["armoredarsenal:couch"]}
+{
+    "replace":  false,
+    "values":  [
+                   "armoredarsenal:white_couch",
+                   "armoredarsenal:orange_couch",
+                   "armoredarsenal:magenta_couch",
+                   "armoredarsenal:light_blue_couch",
+                   "armoredarsenal:yellow_couch",
+                   "armoredarsenal:lime_couch",
+                   "armoredarsenal:pink_couch",
+                   "armoredarsenal:gray_couch",
+                   "armoredarsenal:light_gray_couch",
+                   "armoredarsenal:cyan_couch",
+                   "armoredarsenal:purple_couch",
+                   "armoredarsenal:blue_couch",
+                   "armoredarsenal:brown_couch",
+                   "armoredarsenal:green_couch",
+                   "armoredarsenal:couch",
+                   "armoredarsenal:black_couch",
+                   "armoredarsenal:white_armchair",
+                   "armoredarsenal:orange_armchair",
+                   "armoredarsenal:magenta_armchair",
+                   "armoredarsenal:light_blue_armchair",
+                   "armoredarsenal:yellow_armchair",
+                   "armoredarsenal:lime_armchair",
+                   "armoredarsenal:pink_armchair",
+                   "armoredarsenal:gray_armchair",
+                   "armoredarsenal:light_gray_armchair",
+                   "armoredarsenal:cyan_armchair",
+                   "armoredarsenal:purple_armchair",
+                   "armoredarsenal:blue_armchair",
+                   "armoredarsenal:brown_armchair",
+                   "armoredarsenal:green_armchair",
+                   "armoredarsenal:red_armchair",
+                   "armoredarsenal:black_armchair"
+               ]
+}

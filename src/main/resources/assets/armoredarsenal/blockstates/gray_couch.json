@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": {"model":"armoredarsenal:block/gray_couch"},
+    "facing=east": {"model":"armoredarsenal:block/gray_couch","y":90},
+    "facing=south": {"model":"armoredarsenal:block/gray_couch","y":180},
+    "facing=west": {"model":"armoredarsenal:block/gray_couch","y":270}
+  }
+}

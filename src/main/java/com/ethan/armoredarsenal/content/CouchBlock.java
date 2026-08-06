@@ -18,7 +18,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public final class CouchBlock extends HorizontalDirectionalBlock {
+public final class CouchBlock extends HorizontalDirectionalBlock implements SittableFurnitureBlock {
     public static final MapCodec<CouchBlock> CODEC = simpleCodec(CouchBlock::new);
     private static final VoxelShape NORTH_SOUTH = Shapes.or(
             Block.box(0, 0, 2, 16, 8, 15), Block.box(0, 8, 13, 16, 16, 16),

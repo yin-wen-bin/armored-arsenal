@@ -1,0 +1,4 @@
+{
+  "parent": "armoredarsenal:block/couch_base",
+  "textures": {"fabric": "minecraft:block/white_wool"}
+}

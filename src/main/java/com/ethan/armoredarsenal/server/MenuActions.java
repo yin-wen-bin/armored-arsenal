@@ -60,6 +60,9 @@ public final class MenuActions {
                 handleGunButton(player, GunSelectorMenu.GIVE_ALL);
                 give(player, ModItems.WATER_FLOOD_TNT.get());
                 give(player, ModItems.COUCH.get());
+                give(player, ModItems.COUCHES.get("blue").get());
+                give(player, ModItems.ARMCHAIRS.get("white").get());
+                give(player, ModItems.ARMCHAIRS.get("black").get());
                 give(player, ModItems.WALL_TV.get());
                 giveInstructionBook(player);
             }

@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": {"model":"armoredarsenal:block/light_gray_armchair"},
+    "facing=east": {"model":"armoredarsenal:block/light_gray_armchair","y":90},
+    "facing=south": {"model":"armoredarsenal:block/light_gray_armchair","y":180},
+    "facing=west": {"model":"armoredarsenal:block/light_gray_armchair","y":270}
+  }
+}

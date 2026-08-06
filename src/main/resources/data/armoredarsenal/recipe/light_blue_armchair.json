@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": ["W W","WWW","P P"],
+  "key": {
+    "W": "minecraft:light_blue_wool",
+    "P": "minecraft:dark_oak_planks"
+  },
+  "result": {"id":"armoredarsenal:light_blue_armchair","count":1}
+}

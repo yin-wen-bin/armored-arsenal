@@ -1,6 +1,6 @@
 package com.ethan.armoredarsenal.server;
 
-import com.ethan.armoredarsenal.registry.ModBlocks;
+import com.ethan.armoredarsenal.content.SittableFurnitureBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -21,7 +21,7 @@ public final class CouchSittingHandler {
 
     public static void rightClickBlock(PlayerInteractEvent.RightClickBlock event) {
         if (event.getHand() != InteractionHand.MAIN_HAND
-                || !event.getLevel().getBlockState(event.getPos()).is(ModBlocks.COUCH.get())) {
+                || !(event.getLevel().getBlockState(event.getPos()).getBlock() instanceof SittableFurnitureBlock)) {
             return;
         }
 
@@ -64,7 +64,8 @@ public final class CouchSittingHandler {
             return;
         }
         BlockPos couchPos = BlockPos.of(seat.getPersistentData().getLongOr(SEAT_POS, seat.blockPosition().asLong()));
-        if (!seat.level().getBlockState(couchPos).is(ModBlocks.COUCH.get()) || seat.getPassengers().isEmpty()) {
+        if (!(seat.level().getBlockState(couchPos).getBlock() instanceof SittableFurnitureBlock)
+                || seat.getPassengers().isEmpty()) {
             seat.discard();
             return;
         }

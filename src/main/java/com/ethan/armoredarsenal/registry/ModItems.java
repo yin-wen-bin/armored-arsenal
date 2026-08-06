@@ -12,6 +12,10 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public final class ModItems {
     private static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(ArmoredArsenal.MOD_ID);
 
@@ -44,6 +48,22 @@ public final class ModItems {
             "water_flood_tnt", properties -> new WaterFloodTntItem(properties.stacksTo(16)));
     public static final DeferredItem<BlockItem> COUCH = ITEMS.registerSimpleBlockItem("couch", ModBlocks.COUCH);
     public static final DeferredItem<BlockItem> WALL_TV = ITEMS.registerSimpleBlockItem("wall_tv", ModBlocks.WALL_TV);
+    public static final Map<String, DeferredItem<BlockItem>> COUCHES = registerCouches();
+    public static final Map<String, DeferredItem<BlockItem>> ARMCHAIRS = registerArmchairs();
+
+    private static Map<String, DeferredItem<BlockItem>> registerCouches() {
+        Map<String, DeferredItem<BlockItem>> items = new LinkedHashMap<>();
+        ModBlocks.COUCHES.forEach((color, block) -> items.put(color,
+                color.equals("red") ? COUCH : ITEMS.registerSimpleBlockItem(color + "_couch", block)));
+        return Collections.unmodifiableMap(items);
+    }
+
+    private static Map<String, DeferredItem<BlockItem>> registerArmchairs() {
+        Map<String, DeferredItem<BlockItem>> items = new LinkedHashMap<>();
+        ModBlocks.ARMCHAIRS.forEach((color, block) ->
+                items.put(color, ITEMS.registerSimpleBlockItem(color + "_armchair", block)));
+        return Collections.unmodifiableMap(items);
+    }
 
     public static void register(IEventBus bus) {
         ITEMS.register(bus);
@@ -51,4 +71,3 @@ public final class ModItems {
 
     private ModItems() {}
 }
-

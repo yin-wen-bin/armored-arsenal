@@ -29,7 +29,8 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.BEAM_CANNON.get());
                         output.accept(ModItems.CHARGED_SNIPER_LASER.get());
                         output.accept(ModItems.WATER_FLOOD_TNT.get());
-                        output.accept(ModItems.COUCH.get());
+                        ModItems.COUCHES.values().forEach(item -> output.accept(item.get()));
+                        ModItems.ARMCHAIRS.values().forEach(item -> output.accept(item.get()));
                         output.accept(ModItems.WALL_TV.get());
                         output.accept(InstructionBook.create());
                     })
