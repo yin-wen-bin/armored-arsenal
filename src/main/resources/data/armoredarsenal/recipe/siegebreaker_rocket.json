@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "combat",
+  "pattern": ["GTG","TRT","GTG"],
+  "key": {
+    "G": "minecraft:gold_ingot",
+    "T": "minecraft:tnt",
+    "R": "armoredarsenal:stinger_rocket"
+  },
+  "result": {"id":"armoredarsenal:siegebreaker_rocket","count":2}
+}

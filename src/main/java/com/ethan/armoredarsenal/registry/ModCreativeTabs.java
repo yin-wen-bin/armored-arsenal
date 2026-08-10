@@ -28,6 +28,9 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.PULSE_PISTOL.get());
                         output.accept(ModItems.BEAM_CANNON.get());
                         output.accept(ModItems.CHARGED_SNIPER_LASER.get());
+                        output.accept(ModItems.STINGER_ROCKET.get());
+                        output.accept(ModItems.SIEGEBREAKER_ROCKET.get());
+                        output.accept(ModItems.TITAN_ROCKET.get());
                         output.accept(ModItems.WATER_FLOOD_TNT.get());
                         ModItems.COUCHES.values().forEach(item -> output.accept(item.get()));
                         ModItems.ARMCHAIRS.values().forEach(item -> output.accept(item.get()));

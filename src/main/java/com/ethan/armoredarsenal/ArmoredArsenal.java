@@ -14,6 +14,7 @@ import com.ethan.armoredarsenal.server.BuildableEndPortalHandler;
 import com.ethan.armoredarsenal.server.CouchSittingHandler;
 import com.ethan.armoredarsenal.server.DelayedMinecartHandler;
 import com.ethan.armoredarsenal.server.MaterialGolemHandler;
+import com.ethan.armoredarsenal.server.RocketLogic;
 import com.ethan.armoredarsenal.server.VillagePopulationHandler;
 import com.ethan.armoredarsenal.server.WorldEditTools;
 import com.ethan.armoredarsenal.server.WaterFloodTntHandler;
@@ -48,6 +49,8 @@ public final class ArmoredArsenal {
         NeoForge.EVENT_BUS.addListener(WorldEditTools::rightClickBlock);
         NeoForge.EVENT_BUS.addListener(WorldEditTools::leftClickBlock);
         NeoForge.EVENT_BUS.addListener(WaterFloodTntHandler::beforeEntityTick);
+        NeoForge.EVENT_BUS.addListener(RocketLogic::projectileImpact);
+        NeoForge.EVENT_BUS.addListener(RocketLogic::beforeEntityTick);
     }
 
     private static void registerPayloads(RegisterPayloadHandlersEvent event) {

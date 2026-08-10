@@ -19,6 +19,18 @@
     "facing=north,gun=4": {"model":"armoredarsenal:block/auto_turret_sniper"},
     "facing=east,gun=4": {"model":"armoredarsenal:block/auto_turret_sniper","y":90},
     "facing=south,gun=4": {"model":"armoredarsenal:block/auto_turret_sniper","y":180},
-    "facing=west,gun=4": {"model":"armoredarsenal:block/auto_turret_sniper","y":270}
+    "facing=west,gun=4": {"model":"armoredarsenal:block/auto_turret_sniper","y":270},
+    "facing=north,gun=5": {"model":"armoredarsenal:block/auto_turret_stinger"},
+    "facing=east,gun=5": {"model":"armoredarsenal:block/auto_turret_stinger","y":90},
+    "facing=south,gun=5": {"model":"armoredarsenal:block/auto_turret_stinger","y":180},
+    "facing=west,gun=5": {"model":"armoredarsenal:block/auto_turret_stinger","y":270},
+    "facing=north,gun=6": {"model":"armoredarsenal:block/auto_turret_siegebreaker"},
+    "facing=east,gun=6": {"model":"armoredarsenal:block/auto_turret_siegebreaker","y":90},
+    "facing=south,gun=6": {"model":"armoredarsenal:block/auto_turret_siegebreaker","y":180},
+    "facing=west,gun=6": {"model":"armoredarsenal:block/auto_turret_siegebreaker","y":270},
+    "facing=north,gun=7": {"model":"armoredarsenal:block/auto_turret_titan"},
+    "facing=east,gun=7": {"model":"armoredarsenal:block/auto_turret_titan","y":90},
+    "facing=south,gun=7": {"model":"armoredarsenal:block/auto_turret_titan","y":180},
+    "facing=west,gun=7": {"model":"armoredarsenal:block/auto_turret_titan","y":270}
   }
 }

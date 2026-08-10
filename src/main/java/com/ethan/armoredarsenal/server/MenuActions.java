@@ -35,6 +35,9 @@ public final class MenuActions {
                 give(player, ModItems.PULSE_PISTOL.get());
                 give(player, ModItems.BEAM_CANNON.get());
                 give(player, ModItems.CHARGED_SNIPER_LASER.get());
+                give(player, ModItems.STINGER_ROCKET.get());
+                give(player, ModItems.SIEGEBREAKER_ROCKET.get());
+                give(player, ModItems.TITAN_ROCKET.get());
             }
             default -> player.sendSystemMessage(Component.literal("Unknown weapon action."), false);
         }

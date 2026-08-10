@@ -3,6 +3,8 @@ package com.ethan.armoredarsenal.registry;
 import com.ethan.armoredarsenal.ArmoredArsenal;
 import com.ethan.armoredarsenal.content.ArmoredArmorMaterials;
 import com.ethan.armoredarsenal.content.LaserWeaponItem;
+import com.ethan.armoredarsenal.content.RocketItem;
+import com.ethan.armoredarsenal.content.RocketProfile;
 import com.ethan.armoredarsenal.content.WeaponProfile;
 import com.ethan.armoredarsenal.content.WaterFloodTntItem;
 import net.minecraft.world.item.BlockItem;
@@ -44,6 +46,12 @@ public final class ModItems {
     public static final DeferredItem<Item> CHARGED_SNIPER_LASER = ITEMS.registerItem(
             "charged_sniper_laser",
             properties -> new LaserWeaponItem(properties.stacksTo(1).durability(720), WeaponProfile.CHARGED_SNIPER));
+    public static final DeferredItem<Item> STINGER_ROCKET = ITEMS.registerItem(
+            "stinger_rocket", properties -> new RocketItem(properties.stacksTo(16), RocketProfile.STINGER));
+    public static final DeferredItem<Item> SIEGEBREAKER_ROCKET = ITEMS.registerItem(
+            "siegebreaker_rocket", properties -> new RocketItem(properties.stacksTo(16), RocketProfile.SIEGEBREAKER));
+    public static final DeferredItem<Item> TITAN_ROCKET = ITEMS.registerItem(
+            "titan_rocket", properties -> new RocketItem(properties.stacksTo(16), RocketProfile.TITAN));
     public static final DeferredItem<Item> WATER_FLOOD_TNT = ITEMS.registerItem(
             "water_flood_tnt", properties -> new WaterFloodTntItem(properties.stacksTo(16)));
     public static final DeferredItem<BlockItem> COUCH = ITEMS.registerSimpleBlockItem("couch", ModBlocks.COUCH);

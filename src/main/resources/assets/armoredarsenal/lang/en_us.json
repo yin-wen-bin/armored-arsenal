@@ -47,5 +47,8 @@
     "block.armoredarsenal.black_couch":  "Black Couch",
     "block.armoredarsenal.black_armchair":  "Black Armchair",
     "block.armoredarsenal.portable_laser":  "Portable Laser",
-    "block.armoredarsenal.auto_turret":  "Auto Turret"
+    "block.armoredarsenal.auto_turret":  "Auto Turret",
+    "item.armoredarsenal.stinger_rocket":  "Stinger Rocket",
+    "item.armoredarsenal.siegebreaker_rocket":  "Siegebreaker Rocket",
+    "item.armoredarsenal.titan_rocket":  "Titan Rocket"
 }

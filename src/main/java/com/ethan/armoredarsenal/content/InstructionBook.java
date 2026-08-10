@@ -167,6 +167,16 @@ public final class InstructionBook {
 
                         Crouch and right-click the turret with an empty hand to take the gun back.
                         """),                page("""
+                        Rocket Arsenal
+
+                        Right-click while holding a rocket to launch it.
+
+                        Stinger: fast, power 2.5.
+                        Siegebreaker: power 4.5.
+                        Titan: slow, power 7.0.
+
+                        Rockets can also be loaded into Auto Turrets. Rocket turrets do not fire at targets closer than five blocks.
+                        """),                page("""
                         Material Golems
 
                         Build the normal iron golem shape, but use four matching blocks instead of iron.

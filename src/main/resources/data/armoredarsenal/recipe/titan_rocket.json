@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "combat",
+  "pattern": ["NTN","TRT","NTN"],
+  "key": {
+    "N": "minecraft:netherite_scrap",
+    "T": "minecraft:tnt",
+    "R": "armoredarsenal:siegebreaker_rocket"
+  },
+  "result": {"id":"armoredarsenal:titan_rocket","count":1}
+}
