@@ -7,6 +7,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -85,10 +86,25 @@ public final class PortableLaserBlock extends HorizontalDirectionalBlock {
 
         Vec3 start = aperture(pos, facing);
         Vec3 end = aperture(partner, facing.getOpposite());
+        damageEntities(level, start, end);
         Vec3 middle = start.add(end).scale(0.5D);
         PacketDistributor.sendToPlayersNear(
                 level, null, middle.x, middle.y, middle.z, MAX_RANGE + 24.0D,
                 LaserBeamPayload.between(pos.asLong(), start, end, 0xDFFF1818, 0.085F, UPDATE_INTERVAL + 3));
+    }
+
+    private static void damageEntities(ServerLevel level, Vec3 start, Vec3 end) {
+        level.getEntitiesOfClass(
+                        LivingEntity.class,
+                        new net.minecraft.world.phys.AABB(start, end).inflate(0.3D),
+                        LivingEntity::isAlive)
+                .stream()
+                .filter(entity -> entity.getBoundingBox().inflate(0.12D).clip(start, end).isPresent())
+                .forEach(entity -> {
+                    if (entity.hurtServer(level, level.damageSources().magic(), 3.0F)) {
+                        entity.igniteForSeconds(1.0F);
+                    }
+                });
     }
 
     private BlockPos findPartner(ServerLevel level, BlockPos pos, Direction facing) {

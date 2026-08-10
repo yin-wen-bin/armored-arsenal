@@ -159,6 +159,14 @@ public final class InstructionBook {
 
                         Enter the portal to reach the main End island.
                         """),                page("""
+                        Lasers and Turrets
+
+                        Two Portable Lasers on directly opposite walls connect across up to 64 clear blocks. Their beam damages anything crossing it.
+
+                        Place an Auto Turret on the floor. Right-click it with an Armored Arsenal gun to load it. It automatically targets hostile mobs.
+
+                        Crouch and right-click the turret with an empty hand to take the gun back.
+                        """),                page("""
                         Material Golems
 
                         Build the normal iron golem shape, but use four matching blocks instead of iron.

@@ -2,6 +2,7 @@ package com.ethan.armoredarsenal.registry;
 
 import com.ethan.armoredarsenal.ArmoredArsenal;
 import com.ethan.armoredarsenal.content.ArmchairBlock;
+import com.ethan.armoredarsenal.content.AutoTurretBlock;
 import com.ethan.armoredarsenal.content.CouchBlock;
 import com.ethan.armoredarsenal.content.PortableLaserBlock;
 import com.ethan.armoredarsenal.content.WallTvBlock;
@@ -31,6 +32,9 @@ public final class ModBlocks {
     public static final DeferredBlock<PortableLaserBlock> PORTABLE_LASER = BLOCKS.registerBlock(
             "portable_laser", PortableLaserBlock::new,
             () -> BlockBehaviour.Properties.of().strength(2.0F).sound(SoundType.METAL).noOcclusion().lightLevel(state -> 10));
+    public static final DeferredBlock<AutoTurretBlock> AUTO_TURRET = BLOCKS.registerBlock(
+            "auto_turret", AutoTurretBlock::new,
+            () -> BlockBehaviour.Properties.of().strength(4.0F).sound(SoundType.METAL).noOcclusion());
     public static final Map<String, DeferredBlock<CouchBlock>> COUCHES = registerCouches();
     public static final Map<String, DeferredBlock<ArmchairBlock>> ARMCHAIRS = registerArmchairs();
 

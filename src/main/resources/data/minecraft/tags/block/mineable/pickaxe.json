@@ -2,6 +2,7 @@
     "replace":  false,
     "values":  [
                    "armoredarsenal:wall_tv",
-                   "armoredarsenal:portable_laser"
+                   "armoredarsenal:portable_laser",
+                   "armoredarsenal:auto_turret"
                ]
 }

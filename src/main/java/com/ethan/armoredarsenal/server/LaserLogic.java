@@ -61,6 +61,17 @@ public final class LaserLogic {
         });
     }
 
+    public static void fireTurretBeam(
+            ServerLevel level, net.minecraft.core.BlockPos turretPos, Vec3 start,
+            LivingEntity target, WeaponProfile profile) {
+        Vec3 end = target.getEyePosition();
+        showBeam(level, start, end, profile.beamWidth());
+        level.playSound(null, turretPos, SoundEvents.BEACON_POWER_SELECT, SoundSource.BLOCKS, 0.7F, profile.soundPitch());
+        if (target.hurtServer(level, level.damageSources().magic(), profile.damage())) {
+            target.igniteForSeconds(1.0F);
+        }
+    }
+
     private static Optional<BeamHit> findHit(ServerPlayer player, Vec3 start, Vec3 end) {
         Vec3 movement = end.subtract(start);
         AABB searchBox = player.getBoundingBox().expandTowards(movement).inflate(1.2D);

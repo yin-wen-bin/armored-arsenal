@@ -1,0 +1,24 @@
+{
+  "variants": {
+    "facing=north,gun=0": {"model":"armoredarsenal:block/auto_turret_empty"},
+    "facing=east,gun=0": {"model":"armoredarsenal:block/auto_turret_empty","y":90},
+    "facing=south,gun=0": {"model":"armoredarsenal:block/auto_turret_empty","y":180},
+    "facing=west,gun=0": {"model":"armoredarsenal:block/auto_turret_empty","y":270},
+    "facing=north,gun=1": {"model":"armoredarsenal:block/auto_turret_rifle"},
+    "facing=east,gun=1": {"model":"armoredarsenal:block/auto_turret_rifle","y":90},
+    "facing=south,gun=1": {"model":"armoredarsenal:block/auto_turret_rifle","y":180},
+    "facing=west,gun=1": {"model":"armoredarsenal:block/auto_turret_rifle","y":270},
+    "facing=north,gun=2": {"model":"armoredarsenal:block/auto_turret_pistol"},
+    "facing=east,gun=2": {"model":"armoredarsenal:block/auto_turret_pistol","y":90},
+    "facing=south,gun=2": {"model":"armoredarsenal:block/auto_turret_pistol","y":180},
+    "facing=west,gun=2": {"model":"armoredarsenal:block/auto_turret_pistol","y":270},
+    "facing=north,gun=3": {"model":"armoredarsenal:block/auto_turret_cannon"},
+    "facing=east,gun=3": {"model":"armoredarsenal:block/auto_turret_cannon","y":90},
+    "facing=south,gun=3": {"model":"armoredarsenal:block/auto_turret_cannon","y":180},
+    "facing=west,gun=3": {"model":"armoredarsenal:block/auto_turret_cannon","y":270},
+    "facing=north,gun=4": {"model":"armoredarsenal:block/auto_turret_sniper"},
+    "facing=east,gun=4": {"model":"armoredarsenal:block/auto_turret_sniper","y":90},
+    "facing=south,gun=4": {"model":"armoredarsenal:block/auto_turret_sniper","y":180},
+    "facing=west,gun=4": {"model":"armoredarsenal:block/auto_turret_sniper","y":270}
+  }
+}

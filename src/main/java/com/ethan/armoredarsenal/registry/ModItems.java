@@ -50,6 +50,8 @@ public final class ModItems {
     public static final DeferredItem<BlockItem> WALL_TV = ITEMS.registerSimpleBlockItem("wall_tv", ModBlocks.WALL_TV);
     public static final DeferredItem<BlockItem> PORTABLE_LASER =
             ITEMS.registerSimpleBlockItem("portable_laser", ModBlocks.PORTABLE_LASER);
+    public static final DeferredItem<BlockItem> AUTO_TURRET =
+            ITEMS.registerSimpleBlockItem("auto_turret", ModBlocks.AUTO_TURRET);
     public static final Map<String, DeferredItem<BlockItem>> COUCHES = registerCouches();
     public static final Map<String, DeferredItem<BlockItem>> ARMCHAIRS = registerArmchairs();
 
