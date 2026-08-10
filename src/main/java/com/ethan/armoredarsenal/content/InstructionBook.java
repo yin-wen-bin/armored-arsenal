@@ -177,6 +177,15 @@ public final class InstructionBook {
 
                         Rockets can also be loaded into Auto Turrets. Rocket turrets do not fire at targets closer than five blocks.
                         """),                page("""
+                        Heavy Weapons
+
+                        Rifle: accurate, long-range single shots.
+                        Minigun: a rapid six-shot burst.
+                        Bazooka: fires a straight Titan-class rocket.
+                        Grenade Launcher: fires an arcing Siegebreaker-class shell.
+
+                        Right-click to fire. Every weapon can be installed in an Auto Turret.
+                        """),                page("""
                         Material Golems
 
                         Build the normal iron golem shape, but use four matching blocks instead of iron.

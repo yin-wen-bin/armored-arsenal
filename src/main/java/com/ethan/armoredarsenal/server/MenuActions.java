@@ -38,6 +38,10 @@ public final class MenuActions {
                 give(player, ModItems.STINGER_ROCKET.get());
                 give(player, ModItems.SIEGEBREAKER_ROCKET.get());
                 give(player, ModItems.TITAN_ROCKET.get());
+                give(player, ModItems.RIFLE.get());
+                give(player, ModItems.MINIGUN.get());
+                give(player, ModItems.BAZOOKA.get());
+                give(player, ModItems.GRENADE_LAUNCHER.get());
             }
             default -> player.sendSystemMessage(Component.literal("Unknown weapon action."), false);
         }

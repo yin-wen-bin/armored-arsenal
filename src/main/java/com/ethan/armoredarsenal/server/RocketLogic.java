@@ -2,6 +2,8 @@ package com.ethan.armoredarsenal.server;
 
 import com.ethan.armoredarsenal.content.RocketItem;
 import com.ethan.armoredarsenal.content.RocketProfile;
+import com.ethan.armoredarsenal.content.LauncherProfile;
+import com.ethan.armoredarsenal.registry.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -28,7 +30,7 @@ public final class RocketLogic {
         Vec3 direction = player.getLookAngle().normalize();
         Snowball rocket = new Snowball(player.level(), player, new ItemStack(stack.getItem()));
         rocket.setPos(player.getEyePosition().add(direction.scale(0.7D)));
-        prepareRocket(rocket, direction, profile.speed());
+        prepareRocket(rocket, direction, profile.speed(), false);
         player.level().addFreshEntity(rocket);
         player.level().playSound(
                 null, player.blockPosition(), SoundEvents.FIREWORK_ROCKET_LAUNCH,
@@ -39,15 +41,49 @@ public final class RocketLogic {
         }
     }
 
+    public static void launchWeaponFromPlayer(
+            ServerPlayer player, InteractionHand hand, LauncherProfile launcher) {
+        ItemStack weapon = player.getItemInHand(hand);
+        if (player.getCooldowns().isOnCooldown(weapon)) {
+            return;
+        }
+
+        Item projectileItem = projectileItem(launcher);
+        Vec3 direction = player.getLookAngle().normalize();
+        Snowball rocket = new Snowball(player.level(), player, new ItemStack(projectileItem));
+        rocket.setPos(player.getEyePosition().add(direction.scale(0.8D)));
+        prepareRocket(rocket, direction, launcher.speed(), launcher.arcing());
+        player.level().addFreshEntity(rocket);
+        player.level().playSound(
+                null, player.blockPosition(), SoundEvents.FIREWORK_ROCKET_LAUNCH,
+                SoundSource.PLAYERS, 1.2F, launcher.arcing() ? 1.05F : 0.65F);
+        player.getCooldowns().addCooldown(weapon, launcher.cooldownTicks());
+    }
+
     public static void launchFromTurret(
             ServerLevel level, BlockPos turretPos, Vec3 start, LivingEntity target, RocketProfile profile, Item rocketItem) {
         Vec3 direction = target.getEyePosition().subtract(start).normalize();
         Snowball rocket = new Snowball(level, start.x, start.y, start.z, new ItemStack(rocketItem));
-        prepareRocket(rocket, direction, profile.speed());
+        prepareRocket(rocket, direction, profile.speed(), false);
         level.addFreshEntity(rocket);
         level.playSound(
                 null, turretPos, SoundEvents.FIREWORK_ROCKET_LAUNCH,
                 SoundSource.BLOCKS, 0.9F, 0.72F);
+    }
+
+    public static void launchWeaponFromTurret(
+            ServerLevel level, BlockPos turretPos, Vec3 start, LivingEntity target, LauncherProfile launcher) {
+        Vec3 delta = target.getEyePosition().subtract(start);
+        Vec3 direction = launcher.arcing()
+                ? new Vec3(delta.x, delta.y + delta.horizontalDistance() * 0.18D, delta.z).normalize()
+                : delta.normalize();
+        Snowball rocket = new Snowball(
+                level, start.x, start.y, start.z, new ItemStack(projectileItem(launcher)));
+        prepareRocket(rocket, direction, launcher.speed(), launcher.arcing());
+        level.addFreshEntity(rocket);
+        level.playSound(
+                null, turretPos, SoundEvents.FIREWORK_ROCKET_LAUNCH,
+                SoundSource.BLOCKS, 1.0F, launcher.arcing() ? 1.05F : 0.65F);
     }
 
     public static void projectileImpact(ProjectileImpactEvent event) {
@@ -83,8 +119,14 @@ public final class RocketLogic {
         }
     }
 
-    private static void prepareRocket(Snowball rocket, Vec3 direction, float speed) {
-        rocket.setNoGravity(true);
+    private static Item projectileItem(LauncherProfile launcher) {
+        return launcher == LauncherProfile.BAZOOKA
+                ? ModItems.TITAN_ROCKET.get()
+                : ModItems.SIEGEBREAKER_ROCKET.get();
+    }
+
+    private static void prepareRocket(Snowball rocket, Vec3 direction, float speed, boolean arcing) {
+        rocket.setNoGravity(!arcing);
         rocket.shoot(direction.x, direction.y, direction.z, speed, 0.0F);
     }
 

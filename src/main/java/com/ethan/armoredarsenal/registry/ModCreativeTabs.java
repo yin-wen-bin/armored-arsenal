@@ -31,6 +31,10 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.STINGER_ROCKET.get());
                         output.accept(ModItems.SIEGEBREAKER_ROCKET.get());
                         output.accept(ModItems.TITAN_ROCKET.get());
+                        output.accept(ModItems.RIFLE.get());
+                        output.accept(ModItems.MINIGUN.get());
+                        output.accept(ModItems.BAZOOKA.get());
+                        output.accept(ModItems.GRENADE_LAUNCHER.get());
                         output.accept(ModItems.WATER_FLOOD_TNT.get());
                         ModItems.COUCHES.values().forEach(item -> output.accept(item.get()));
                         ModItems.ARMCHAIRS.values().forEach(item -> output.accept(item.get()));

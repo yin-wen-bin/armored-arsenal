@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"equipment","pattern":[" II","DSR"," II"],"key":{"I":"minecraft:iron_ingot","D":"minecraft:dispenser","S":"armoredarsenal:siegebreaker_rocket","R":"minecraft:redstone"},"result":{"id":"armoredarsenal:grenade_launcher","count":1}}

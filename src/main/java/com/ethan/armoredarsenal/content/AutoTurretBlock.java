@@ -2,6 +2,7 @@ package com.ethan.armoredarsenal.content;
 
 import com.ethan.armoredarsenal.registry.ModItems;
 import com.ethan.armoredarsenal.server.LaserLogic;
+import com.ethan.armoredarsenal.server.BallisticLogic;
 import com.ethan.armoredarsenal.server.RocketLogic;
 import com.mojang.serialization.MapCodec;
 import java.util.Comparator;
@@ -38,7 +39,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public final class AutoTurretBlock extends HorizontalDirectionalBlock {
     public static final MapCodec<AutoTurretBlock> CODEC = simpleCodec(AutoTurretBlock::new);
-    public static final IntegerProperty GUN = IntegerProperty.create("gun", 0, 7);
+    public static final IntegerProperty GUN = IntegerProperty.create("gun", 0, 11);
     private static final VoxelShape SHAPE = Shapes.or(
             Block.box(2, 0, 2, 14, 4, 14),
             Block.box(5, 4, 5, 11, 10, 11),
@@ -127,8 +128,39 @@ public final class AutoTurretBlock extends HorizontalDirectionalBlock {
 
         if (gun <= 4) {
             fireLaser(level, pos, state, gun);
-        } else {
+        } else if (gun <= 7) {
             fireRocket(level, pos, state, gun);
+        } else if (gun <= 9) {
+            fireBallistic(level, pos, state, gun);
+        } else {
+            fireLauncher(level, pos, state, gun);
+        }
+    }
+
+    private void fireBallistic(ServerLevel level, BlockPos pos, BlockState state, int gun) {
+        BallisticProfile profile = ballisticProfileFor(gun);
+        level.scheduleTick(pos, this, Math.max(4, profile.cooldownTicks()));
+        findTarget(level, pos, profile.range(), 0.0D).ifPresent(target -> {
+            rotateToward(level, pos, state, target);
+            BallisticLogic.fireTurret(
+                    level, pos, Vec3.atCenterOf(pos).add(0.0D, 0.56D, 0.0D), target, profile);
+        });
+    }
+
+    private void fireLauncher(ServerLevel level, BlockPos pos, BlockState state, int gun) {
+        LauncherProfile profile = launcherProfileFor(gun);
+        level.scheduleTick(pos, this, Math.max(8, profile.cooldownTicks()));
+        findTarget(level, pos, profile.range(), 5.0D).ifPresent(target -> {
+            rotateToward(level, pos, state, target);
+            RocketLogic.launchWeaponFromTurret(
+                    level, pos, Vec3.atCenterOf(pos).add(0.0D, 0.56D, 0.0D), target, profile);
+        });
+    }
+
+    private static void rotateToward(ServerLevel level, BlockPos pos, BlockState state, LivingEntity target) {
+        Direction facing = facingToward(pos, target.position());
+        if (state.getValue(FACING) != facing) {
+            level.setBlock(pos, state.setValue(FACING, facing), Block.UPDATE_CLIENTS);
         }
     }
 
@@ -197,6 +229,10 @@ public final class AutoTurretBlock extends HorizontalDirectionalBlock {
         if (item == ModItems.STINGER_ROCKET.get()) return 5;
         if (item == ModItems.SIEGEBREAKER_ROCKET.get()) return 6;
         if (item == ModItems.TITAN_ROCKET.get()) return 7;
+        if (item == ModItems.RIFLE.get()) return 8;
+        if (item == ModItems.MINIGUN.get()) return 9;
+        if (item == ModItems.BAZOOKA.get()) return 10;
+        if (item == ModItems.GRENADE_LAUNCHER.get()) return 11;
         return 0;
     }
 
@@ -209,6 +245,10 @@ public final class AutoTurretBlock extends HorizontalDirectionalBlock {
             case 5 -> ModItems.STINGER_ROCKET.get();
             case 6 -> ModItems.SIEGEBREAKER_ROCKET.get();
             case 7 -> ModItems.TITAN_ROCKET.get();
+            case 8 -> ModItems.RIFLE.get();
+            case 9 -> ModItems.MINIGUN.get();
+            case 10 -> ModItems.BAZOOKA.get();
+            case 11 -> ModItems.GRENADE_LAUNCHER.get();
             default -> throw new IllegalArgumentException("Unknown turret gun " + gun);
         };
     }
@@ -233,7 +273,26 @@ public final class AutoTurretBlock extends HorizontalDirectionalBlock {
     }
 
     private static Component displayNameFor(int gun) {
-        return gun <= 4 ? profileFor(gun).displayName() : rocketProfileFor(gun).displayName();
+        if (gun <= 4) return profileFor(gun).displayName();
+        if (gun <= 7) return rocketProfileFor(gun).displayName();
+        if (gun <= 9) return ballisticProfileFor(gun).displayName();
+        return launcherProfileFor(gun).displayName();
+    }
+
+    private static BallisticProfile ballisticProfileFor(int gun) {
+        return switch (gun) {
+            case 8 -> BallisticProfile.RIFLE;
+            case 9 -> BallisticProfile.MINIGUN;
+            default -> throw new IllegalArgumentException("Unknown turret ballistic weapon " + gun);
+        };
+    }
+
+    private static LauncherProfile launcherProfileFor(int gun) {
+        return switch (gun) {
+            case 10 -> LauncherProfile.BAZOOKA;
+            case 11 -> LauncherProfile.GRENADE_LAUNCHER;
+            default -> throw new IllegalArgumentException("Unknown turret launcher " + gun);
+        };
     }
 
     @Override

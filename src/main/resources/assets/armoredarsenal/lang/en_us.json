@@ -50,5 +50,9 @@
     "block.armoredarsenal.auto_turret":  "Auto Turret",
     "item.armoredarsenal.stinger_rocket":  "Stinger Rocket",
     "item.armoredarsenal.siegebreaker_rocket":  "Siegebreaker Rocket",
-    "item.armoredarsenal.titan_rocket":  "Titan Rocket"
+    "item.armoredarsenal.titan_rocket":  "Titan Rocket",
+    "item.armoredarsenal.rifle":  "Rifle",
+    "item.armoredarsenal.minigun":  "Minigun",
+    "item.armoredarsenal.bazooka":  "Bazooka",
+    "item.armoredarsenal.grenade_launcher":  "Grenade Launcher"
 }

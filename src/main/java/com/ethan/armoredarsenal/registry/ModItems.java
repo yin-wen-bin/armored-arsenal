@@ -2,6 +2,10 @@ package com.ethan.armoredarsenal.registry;
 
 import com.ethan.armoredarsenal.ArmoredArsenal;
 import com.ethan.armoredarsenal.content.ArmoredArmorMaterials;
+import com.ethan.armoredarsenal.content.BallisticProfile;
+import com.ethan.armoredarsenal.content.BallisticWeaponItem;
+import com.ethan.armoredarsenal.content.LauncherProfile;
+import com.ethan.armoredarsenal.content.LauncherWeaponItem;
 import com.ethan.armoredarsenal.content.LaserWeaponItem;
 import com.ethan.armoredarsenal.content.RocketItem;
 import com.ethan.armoredarsenal.content.RocketProfile;
@@ -52,6 +56,14 @@ public final class ModItems {
             "siegebreaker_rocket", properties -> new RocketItem(properties.stacksTo(16), RocketProfile.SIEGEBREAKER));
     public static final DeferredItem<Item> TITAN_ROCKET = ITEMS.registerItem(
             "titan_rocket", properties -> new RocketItem(properties.stacksTo(16), RocketProfile.TITAN));
+    public static final DeferredItem<Item> RIFLE = ITEMS.registerItem(
+            "rifle", properties -> new BallisticWeaponItem(properties.stacksTo(1).durability(720), BallisticProfile.RIFLE));
+    public static final DeferredItem<Item> MINIGUN = ITEMS.registerItem(
+            "minigun", properties -> new BallisticWeaponItem(properties.stacksTo(1).durability(1200), BallisticProfile.MINIGUN));
+    public static final DeferredItem<Item> BAZOOKA = ITEMS.registerItem(
+            "bazooka", properties -> new LauncherWeaponItem(properties.stacksTo(1).durability(500), LauncherProfile.BAZOOKA));
+    public static final DeferredItem<Item> GRENADE_LAUNCHER = ITEMS.registerItem(
+            "grenade_launcher", properties -> new LauncherWeaponItem(properties.stacksTo(1).durability(640), LauncherProfile.GRENADE_LAUNCHER));
     public static final DeferredItem<Item> WATER_FLOOD_TNT = ITEMS.registerItem(
             "water_flood_tnt", properties -> new WaterFloodTntItem(properties.stacksTo(16)));
     public static final DeferredItem<BlockItem> COUCH = ITEMS.registerSimpleBlockItem("couch", ModBlocks.COUCH);

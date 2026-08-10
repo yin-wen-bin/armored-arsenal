@@ -31,6 +31,22 @@
     "facing=north,gun=7": {"model":"armoredarsenal:block/auto_turret_titan"},
     "facing=east,gun=7": {"model":"armoredarsenal:block/auto_turret_titan","y":90},
     "facing=south,gun=7": {"model":"armoredarsenal:block/auto_turret_titan","y":180},
-    "facing=west,gun=7": {"model":"armoredarsenal:block/auto_turret_titan","y":270}
+    "facing=west,gun=7": {"model":"armoredarsenal:block/auto_turret_titan","y":270},
+    "facing=north,gun=8": {"model":"armoredarsenal:block/auto_turret_marksman_rifle"},
+    "facing=east,gun=8": {"model":"armoredarsenal:block/auto_turret_marksman_rifle","y":90},
+    "facing=south,gun=8": {"model":"armoredarsenal:block/auto_turret_marksman_rifle","y":180},
+    "facing=west,gun=8": {"model":"armoredarsenal:block/auto_turret_marksman_rifle","y":270},
+    "facing=north,gun=9": {"model":"armoredarsenal:block/auto_turret_minigun"},
+    "facing=east,gun=9": {"model":"armoredarsenal:block/auto_turret_minigun","y":90},
+    "facing=south,gun=9": {"model":"armoredarsenal:block/auto_turret_minigun","y":180},
+    "facing=west,gun=9": {"model":"armoredarsenal:block/auto_turret_minigun","y":270},
+    "facing=north,gun=10": {"model":"armoredarsenal:block/auto_turret_bazooka"},
+    "facing=east,gun=10": {"model":"armoredarsenal:block/auto_turret_bazooka","y":90},
+    "facing=south,gun=10": {"model":"armoredarsenal:block/auto_turret_bazooka","y":180},
+    "facing=west,gun=10": {"model":"armoredarsenal:block/auto_turret_bazooka","y":270},
+    "facing=north,gun=11": {"model":"armoredarsenal:block/auto_turret_grenade_launcher"},
+    "facing=east,gun=11": {"model":"armoredarsenal:block/auto_turret_grenade_launcher","y":90},
+    "facing=south,gun=11": {"model":"armoredarsenal:block/auto_turret_grenade_launcher","y":180},
+    "facing=west,gun=11": {"model":"armoredarsenal:block/auto_turret_grenade_launcher","y":270}
   }
 }
