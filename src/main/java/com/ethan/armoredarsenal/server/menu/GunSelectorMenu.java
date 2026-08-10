@@ -11,6 +11,10 @@ public class GunSelectorMenu extends ActionMenu {
     public static final int GIVE_BEAM_CANNON = 2;
     public static final int GIVE_CHARGED_SNIPER = 3;
     public static final int GIVE_ALL = 4;
+    public static final int GIVE_RIFLE = 5;
+    public static final int GIVE_MINIGUN = 6;
+    public static final int GIVE_BAZOOKA = 7;
+    public static final int GIVE_GRENADE_LAUNCHER = 8;
 
     public GunSelectorMenu(int containerId) {
         super(ModMenus.GUN_SELECTOR.get(), containerId);
@@ -25,4 +29,3 @@ public class GunSelectorMenu extends ActionMenu {
         return false;
     }
 }
-

@@ -30,6 +30,10 @@ public final class MenuActions {
             case GunSelectorMenu.GIVE_PULSE_PISTOL -> give(player, ModItems.PULSE_PISTOL.get());
             case GunSelectorMenu.GIVE_BEAM_CANNON -> give(player, ModItems.BEAM_CANNON.get());
             case GunSelectorMenu.GIVE_CHARGED_SNIPER -> give(player, ModItems.CHARGED_SNIPER_LASER.get());
+            case GunSelectorMenu.GIVE_RIFLE -> give(player, ModItems.RIFLE.get());
+            case GunSelectorMenu.GIVE_MINIGUN -> give(player, ModItems.MINIGUN.get());
+            case GunSelectorMenu.GIVE_BAZOOKA -> give(player, ModItems.BAZOOKA.get());
+            case GunSelectorMenu.GIVE_GRENADE_LAUNCHER -> give(player, ModItems.GRENADE_LAUNCHER.get());
             case GunSelectorMenu.GIVE_ALL -> {
                 give(player, ModItems.LASER_RIFLE.get());
                 give(player, ModItems.PULSE_PISTOL.get());
