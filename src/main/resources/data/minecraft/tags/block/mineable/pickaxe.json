@@ -1,1 +1,7 @@
-{"replace":false,"values":["armoredarsenal:wall_tv"]}
+{
+    "replace":  false,
+    "values":  [
+                   "armoredarsenal:wall_tv",
+                   "armoredarsenal:portable_laser"
+               ]
+}

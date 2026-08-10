@@ -64,6 +64,8 @@ public final class MenuActions {
                 give(player, ModItems.ARMCHAIRS.get("white").get());
                 give(player, ModItems.ARMCHAIRS.get("black").get());
                 give(player, ModItems.WALL_TV.get());
+                give(player, ModItems.PORTABLE_LASER.get());
+                give(player, ModItems.PORTABLE_LASER.get());
                 giveInstructionBook(player);
             }
             case CreativeSupplyMenu.SPAWN_EGGS -> giveMany(player,

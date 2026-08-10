@@ -1,6 +1,8 @@
 package com.ethan.armoredarsenal;
 
+import com.ethan.armoredarsenal.client.ClientLaserBeams;
 import com.ethan.armoredarsenal.client.ClientTransformationState;
+import com.ethan.armoredarsenal.network.LaserBeamPayload;
 import com.ethan.armoredarsenal.network.TransformationPayload;
 import com.ethan.armoredarsenal.registry.ModCreativeTabs;
 import com.ethan.armoredarsenal.registry.ModBlocks;
@@ -49,10 +51,15 @@ public final class ArmoredArsenal {
     }
 
     private static void registerPayloads(RegisterPayloadHandlersEvent event) {
-        event.registrar("1").playToClient(
+        var registrar = event.registrar("1");
+        registrar.playToClient(
                 TransformationPayload.TYPE,
                 TransformationPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> ClientTransformationState.accept(payload)));
+        registrar.playToClient(
+                LaserBeamPayload.TYPE,
+                LaserBeamPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> ClientLaserBeams.accept(payload)));
     }
 
     public static Identifier id(String path) {

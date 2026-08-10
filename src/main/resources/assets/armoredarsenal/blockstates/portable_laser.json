@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": {"model":"armoredarsenal:block/portable_laser"},
+    "facing=east": {"model":"armoredarsenal:block/portable_laser","y":90},
+    "facing=south": {"model":"armoredarsenal:block/portable_laser","y":180},
+    "facing=west": {"model":"armoredarsenal:block/portable_laser","y":270}
+  }
+}

@@ -1,12 +1,12 @@
 package com.ethan.armoredarsenal.server;
 
 import com.ethan.armoredarsenal.content.WeaponProfile;
+import com.ethan.armoredarsenal.network.LaserBeamPayload;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -16,11 +16,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public final class LaserLogic {
     private static final Map<UUID, Map<String, Long>> COOLDOWNS = new HashMap<>();
-    private static final DustParticleOptions RED_LASER = new DustParticleOptions(0xFF1F18, 1.15F);
-    private static final DustParticleOptions HOT_LASER_CORE = new DustParticleOptions(0xFFD9D2, 0.45F);
 
     public static void fireWeapon(ServerPlayer player, WeaponProfile profile) {
         long now = player.level().getGameTime();
@@ -50,7 +49,7 @@ public final class LaserLogic {
         Optional<BeamHit> hit = findHit(player, start, end);
         Vec3 beamEnd = hit.map(BeamHit::position).orElse(end);
 
-        drawBeam(level, start, beamEnd);
+        showBeam(level, start, beamEnd, profile.beamWidth());
         level.playSound(null, player.blockPosition(), SoundEvents.BEACON_POWER_SELECT, SoundSource.PLAYERS, 0.85F, profile.soundPitch());
 
         hit.ifPresent(beamHit -> {
@@ -77,23 +76,13 @@ public final class LaserLogic {
                 .min(Comparator.comparingDouble(hit -> start.distanceToSqr(hit.position())));
     }
 
-    private static void drawBeam(ServerLevel level, Vec3 start, Vec3 end) {
-        Vec3 delta = end.subtract(start);
-        double length = delta.length();
-        if (length <= 0.001D) {
-            return;
-        }
-
-        Vec3 step = delta.normalize().scale(0.45D);
-        int particles = Math.max(1, (int) (length / 0.45D));
-        Vec3 current = start;
-        for (int i = 0; i <= particles; i++) {
-            level.sendParticles(RED_LASER, current.x, current.y, current.z, 1, 0.015D, 0.015D, 0.015D, 0.0D);
-            if (i % 2 == 0) {
-                level.sendParticles(HOT_LASER_CORE, current.x, current.y, current.z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
-            }
-            current = current.add(step);
-        }
+    private static void showBeam(ServerLevel level, Vec3 start, Vec3 end, float width) {
+        Vec3 middle = start.add(end).scale(0.5D);
+        double radius = Math.max(48.0D, start.distanceTo(end) + 16.0D);
+        PacketDistributor.sendToPlayersNear(
+                level, null, middle.x, middle.y, middle.z, radius,
+                LaserBeamPayload.between(
+                        level.getRandom().nextLong(), start, end, 0xEFFF241C, width, 5));
     }
 
     private record BeamHit(Entity entity, Vec3 position) {}

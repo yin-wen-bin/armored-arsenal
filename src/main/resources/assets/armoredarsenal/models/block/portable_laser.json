@@ -1,0 +1,14 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "metal": "minecraft:block/iron_block",
+    "housing": "minecraft:block/black_concrete",
+    "lens": "minecraft:block/redstone_block",
+    "particle": "minecraft:block/iron_block"
+  },
+  "elements": [
+    {"from":[3,3,13],"to":[13,13,16],"faces":{"north":{"texture":"#metal"},"south":{"texture":"#metal"},"east":{"texture":"#metal"},"west":{"texture":"#metal"},"up":{"texture":"#metal"},"down":{"texture":"#metal"}}},
+    {"from":[5,5,11],"to":[11,11,14],"faces":{"north":{"texture":"#housing"},"south":{"texture":"#housing"},"east":{"texture":"#housing"},"west":{"texture":"#housing"},"up":{"texture":"#housing"},"down":{"texture":"#housing"}}},
+    {"from":[6,6,10],"to":[10,10,11.25],"light_emission":15,"faces":{"north":{"texture":"#lens"},"south":{"texture":"#lens"},"east":{"texture":"#lens"},"west":{"texture":"#lens"},"up":{"texture":"#lens"},"down":{"texture":"#lens"}}}
+  ]
+}

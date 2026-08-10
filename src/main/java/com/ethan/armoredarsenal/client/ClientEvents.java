@@ -11,10 +11,13 @@ import net.minecraft.commands.Commands;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.client.event.ExtractLevelRenderStateEvent;
 import net.neoforged.neoforge.client.event.RegisterClientCommandsEvent;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RenderPlayerEvent;
+import net.neoforged.neoforge.client.event.SubmitCustomGeometryEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 
 @EventBusSubscriber(modid = ArmoredArsenal.MOD_ID, value = Dist.CLIENT)
@@ -49,6 +52,21 @@ public final class ClientEvents {
     @SubscribeEvent
     public static void renderTransformedPlayer(RenderPlayerEvent.Pre<?> event) {
         ClientTransformationState.render(event);
+    }
+
+    @SubscribeEvent
+    public static void clientTick(ClientTickEvent.Post event) {
+        ClientLaserBeams.clientTick(event);
+    }
+
+    @SubscribeEvent
+    public static void extractLaserBeams(ExtractLevelRenderStateEvent event) {
+        ClientLaserBeams.extract(event);
+    }
+
+    @SubscribeEvent
+    public static void submitLaserBeams(SubmitCustomGeometryEvent event) {
+        ClientLaserBeams.submit(event);
     }
 
     private ClientEvents() {}

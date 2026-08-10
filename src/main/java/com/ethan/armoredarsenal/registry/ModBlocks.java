@@ -3,6 +3,7 @@ package com.ethan.armoredarsenal.registry;
 import com.ethan.armoredarsenal.ArmoredArsenal;
 import com.ethan.armoredarsenal.content.ArmchairBlock;
 import com.ethan.armoredarsenal.content.CouchBlock;
+import com.ethan.armoredarsenal.content.PortableLaserBlock;
 import com.ethan.armoredarsenal.content.WallTvBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -27,6 +28,9 @@ public final class ModBlocks {
     public static final DeferredBlock<WallTvBlock> WALL_TV = BLOCKS.registerBlock(
             "wall_tv", WallTvBlock::new,
             () -> BlockBehaviour.Properties.of().strength(1.0F).sound(SoundType.GLASS).noOcclusion());
+    public static final DeferredBlock<PortableLaserBlock> PORTABLE_LASER = BLOCKS.registerBlock(
+            "portable_laser", PortableLaserBlock::new,
+            () -> BlockBehaviour.Properties.of().strength(2.0F).sound(SoundType.METAL).noOcclusion().lightLevel(state -> 10));
     public static final Map<String, DeferredBlock<CouchBlock>> COUCHES = registerCouches();
     public static final Map<String, DeferredBlock<ArmchairBlock>> ARMCHAIRS = registerArmchairs();
 

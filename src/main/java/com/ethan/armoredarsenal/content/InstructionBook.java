@@ -101,7 +101,7 @@ public final class InstructionBook {
                         Beam Cannon: heavy.
                         Charged Sniper: long range.
 
-                        Lasers damage mobs and make particles, but v1 does not break terrain.
+                        Lasers damage mobs and render as solid beams, but they do not break terrain.
                         """),
                 page("""
                         Items Menu

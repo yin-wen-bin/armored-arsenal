@@ -32,6 +32,7 @@ public final class ModCreativeTabs {
                         ModItems.COUCHES.values().forEach(item -> output.accept(item.get()));
                         ModItems.ARMCHAIRS.values().forEach(item -> output.accept(item.get()));
                         output.accept(ModItems.WALL_TV.get());
+                        output.accept(ModItems.PORTABLE_LASER.get());
                         output.accept(InstructionBook.create());
                     })
                     .build());
