@@ -78,6 +78,10 @@ public final class MenuActions {
                 give(player, ModItems.PORTABLE_LASER.get());
                 give(player, ModItems.PORTABLE_LASER.get());
                 give(player, ModItems.AUTO_TURRET.get());
+                giveMany(player,
+                        stack(ModItems.ARCANITE.get(), 64),
+                        stack(ModItems.ARCANITE_PICKAXE.get(), 1),
+                        stack(ModItems.ARCANITE_SWORD.get(), 1));
                 giveInstructionBook(player);
             }
             case CreativeSupplyMenu.SPAWN_EGGS -> giveMany(player,

@@ -13,6 +13,7 @@ import com.ethan.armoredarsenal.content.WeaponProfile;
 import com.ethan.armoredarsenal.content.WaterFloodTntItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.equipment.ArmorType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -37,6 +38,27 @@ public final class ModItems {
     public static final DeferredItem<Item> MARK_15_BOOTS = ITEMS.registerItem(
             "mark_15_boots",
             properties -> new Item(properties.humanoidArmor(ArmoredArmorMaterials.MARK_15, ArmorType.BOOTS)));
+    public static final DeferredItem<BlockItem> ARCANITE_ORE =
+            ITEMS.registerSimpleBlockItem("arcanite_ore", ModBlocks.ARCANITE_ORE);
+    public static final DeferredItem<Item> ARCANITE = ITEMS.registerSimpleItem("arcanite");
+    public static final DeferredItem<Item> ARCANITE_SWORD = ITEMS.registerItem(
+            "arcanite_sword", properties -> new Item(properties.sword(ArmoredArmorMaterials.ARCANITE_TOOL, 3.5F, -2.3F)));
+    public static final DeferredItem<Item> ARCANITE_PICKAXE = ITEMS.registerItem(
+            "arcanite_pickaxe", properties -> new Item(properties.pickaxe(ArmoredArmorMaterials.ARCANITE_TOOL, 1.5F, -2.7F)));
+    public static final DeferredItem<Item> ARCANITE_AXE = ITEMS.registerItem(
+            "arcanite_axe", properties -> new Item(properties.axe(ArmoredArmorMaterials.ARCANITE_TOOL, 5.5F, -3.0F)));
+    public static final DeferredItem<Item> ARCANITE_SHOVEL = ITEMS.registerItem(
+            "arcanite_shovel", properties -> new Item(properties.shovel(ArmoredArmorMaterials.ARCANITE_TOOL, 1.5F, -3.0F)));
+    public static final DeferredItem<Item> ARCANITE_HOE = ITEMS.registerItem(
+            "arcanite_hoe", properties -> new Item(properties.hoe(ArmoredArmorMaterials.ARCANITE_TOOL, -4.0F, 0.0F)));
+    public static final DeferredItem<Item> ARCANITE_HELMET = ITEMS.registerItem(
+            "arcanite_helmet", properties -> new Item(properties.humanoidArmor(ArmoredArmorMaterials.ARCANITE, ArmorType.HELMET)));
+    public static final DeferredItem<Item> ARCANITE_CHESTPLATE = ITEMS.registerItem(
+            "arcanite_chestplate", properties -> new Item(properties.humanoidArmor(ArmoredArmorMaterials.ARCANITE, ArmorType.CHESTPLATE)));
+    public static final DeferredItem<Item> ARCANITE_LEGGINGS = ITEMS.registerItem(
+            "arcanite_leggings", properties -> new Item(properties.humanoidArmor(ArmoredArmorMaterials.ARCANITE, ArmorType.LEGGINGS)));
+    public static final DeferredItem<Item> ARCANITE_BOOTS = ITEMS.registerItem(
+            "arcanite_boots", properties -> new Item(properties.humanoidArmor(ArmoredArmorMaterials.ARCANITE, ArmorType.BOOTS)));
 
     public static final DeferredItem<Item> LASER_RIFLE = ITEMS.registerItem(
             "laser_rifle",

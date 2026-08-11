@@ -54,5 +54,16 @@
     "item.armoredarsenal.rifle":  "Rifle",
     "item.armoredarsenal.minigun":  "Minigun",
     "item.armoredarsenal.bazooka":  "Bazooka",
-    "item.armoredarsenal.grenade_launcher":  "Grenade Launcher"
+    "item.armoredarsenal.grenade_launcher":  "Grenade Launcher",
+    "block.armoredarsenal.arcanite_ore": "Arcanite Ore",
+    "item.armoredarsenal.arcanite": "Arcanite",
+    "item.armoredarsenal.arcanite_sword": "Arcanite Sword",
+    "item.armoredarsenal.arcanite_pickaxe": "Arcanite Pickaxe",
+    "item.armoredarsenal.arcanite_axe": "Arcanite Axe",
+    "item.armoredarsenal.arcanite_shovel": "Arcanite Shovel",
+    "item.armoredarsenal.arcanite_hoe": "Arcanite Hoe",
+    "item.armoredarsenal.arcanite_helmet": "Arcanite Helmet",
+    "item.armoredarsenal.arcanite_chestplate": "Arcanite Chestplate",
+    "item.armoredarsenal.arcanite_leggings": "Arcanite Leggings",
+    "item.armoredarsenal.arcanite_boots": "Arcanite Boots"
 }

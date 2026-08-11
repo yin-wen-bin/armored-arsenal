@@ -1,8 +1,9 @@
 {
-    "replace":  false,
-    "values":  [
-                   "armoredarsenal:wall_tv",
-                   "armoredarsenal:portable_laser",
-                   "armoredarsenal:auto_turret"
-               ]
+  "replace": false,
+  "values": [
+    "armoredarsenal:wall_tv",
+    "armoredarsenal:portable_laser",
+    "armoredarsenal:auto_turret",
+    "armoredarsenal:arcanite_ore"
+  ]
 }

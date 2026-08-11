@@ -24,6 +24,17 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.MARK_15_CHESTPLATE.get());
                         output.accept(ModItems.MARK_15_LEGGINGS.get());
                         output.accept(ModItems.MARK_15_BOOTS.get());
+                        output.accept(ModItems.ARCANITE_ORE.get());
+                        output.accept(ModItems.ARCANITE.get());
+                        output.accept(ModItems.ARCANITE_SWORD.get());
+                        output.accept(ModItems.ARCANITE_PICKAXE.get());
+                        output.accept(ModItems.ARCANITE_AXE.get());
+                        output.accept(ModItems.ARCANITE_SHOVEL.get());
+                        output.accept(ModItems.ARCANITE_HOE.get());
+                        output.accept(ModItems.ARCANITE_HELMET.get());
+                        output.accept(ModItems.ARCANITE_CHESTPLATE.get());
+                        output.accept(ModItems.ARCANITE_LEGGINGS.get());
+                        output.accept(ModItems.ARCANITE_BOOTS.get());
                         output.accept(ModItems.LASER_RIFLE.get());
                         output.accept(ModItems.PULSE_PISTOL.get());
                         output.accept(ModItems.BEAM_CANNON.get());

@@ -171,9 +171,9 @@ public final class InstructionBook {
 
                         Right-click while holding a rocket to launch it.
 
-                        Stinger: fast, power 2.5.
-                        Siegebreaker: power 4.5.
-                        Titan: slow, power 7.0.
+                        Stinger: fast, compact power 2.0.
+                        Siegebreaker: power 2.5.
+                        Titan: slow, power 3.0.
 
                         Rockets can also be loaded into Auto Turrets. Rocket turrets do not fire at targets closer than five blocks.
                         """),                page("""
@@ -185,6 +185,14 @@ public final class InstructionBook {
                         Grenade Launcher: fires an arcing Siegebreaker-class shell.
 
                         Right-click to fire. Every weapon can be installed in an Auto Turret.
+
+                        Rifle and Laser Rifle must be loaded manually. Crouch and right-click to reload. Rifle uses an iron nugget; Laser Rifle uses redstone dust.
+                        """),                page("""
+                        Arsenal Dimension
+
+                        Type /arsenal to enter the new dimension. Type it again there to return to the Overworld.
+
+                        Mine underground for Arcanite Ore. Arcanite crafts into a complete tool and armor set using normal Minecraft recipe shapes.
                         """),                page("""
                         Material Golems
 

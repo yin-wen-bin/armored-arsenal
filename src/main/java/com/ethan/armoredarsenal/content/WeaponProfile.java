@@ -12,7 +12,7 @@ public record WeaponProfile(
         float soundPitch,
         float beamWidth) {
     public static final WeaponProfile LASER_RIFLE =
-            new WeaponProfile("laser_rifle", Component.translatable("item.armoredarsenal.laser_rifle"), 9.0F, 46.0D, 14, 0, 1.15F, 0.09F);
+            new WeaponProfile("laser_rifle", Component.translatable("item.armoredarsenal.laser_rifle"), 12.0F, 48.0D, 12, 0, 1.15F, 0.09F);
     public static final WeaponProfile PULSE_PISTOL =
             new WeaponProfile("pulse_pistol", Component.translatable("item.armoredarsenal.pulse_pistol"), 5.0F, 28.0D, 8, 0, 1.45F, 0.065F);
     public static final WeaponProfile BEAM_CANNON =
@@ -22,4 +22,3 @@ public record WeaponProfile(
     public static final WeaponProfile REPULSOR =
             new WeaponProfile("mark_15_repulsor", Component.translatable("power.armoredarsenal.repulsor"), 12.0F, 36.0D, 18, 10, 1.9F, 0.13F);
 }
-

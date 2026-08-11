@@ -52,6 +52,12 @@ public final class ArmoredCommands {
                 .executes(context -> teleportToRollercoaster(context.getSource().getPlayerOrException())));
         dispatcher.register(Commands.literal("clearmobs")
                 .executes(context -> clearMobs(context.getSource().getPlayerOrException())));
+        dispatcher.register(Commands.literal("arsenal")
+                .executes(context -> ArsenalDimensionHandler.toggleDimension(
+                        context.getSource().getPlayerOrException())));
+        dispatcher.register(Commands.literal("arsenaldimension")
+                .executes(context -> ArsenalDimensionHandler.toggleDimension(
+                        context.getSource().getPlayerOrException())));
     }
 
     public static void handlePlainChatCommands(ServerChatEvent event) {

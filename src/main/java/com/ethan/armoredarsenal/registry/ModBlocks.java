@@ -35,6 +35,10 @@ public final class ModBlocks {
     public static final DeferredBlock<AutoTurretBlock> AUTO_TURRET = BLOCKS.registerBlock(
             "auto_turret", AutoTurretBlock::new,
             () -> BlockBehaviour.Properties.of().strength(4.0F).sound(SoundType.METAL).noOcclusion());
+    public static final DeferredBlock<net.minecraft.world.level.block.DropExperienceBlock> ARCANITE_ORE = BLOCKS.registerBlock(
+            "arcanite_ore", properties -> new net.minecraft.world.level.block.DropExperienceBlock(
+                    net.minecraft.util.valueproviders.UniformInt.of(4, 8), properties),
+            () -> BlockBehaviour.Properties.of().strength(4.5F, 6.0F).requiresCorrectToolForDrops().sound(SoundType.STONE));
     public static final Map<String, DeferredBlock<CouchBlock>> COUCHES = registerCouches();
     public static final Map<String, DeferredBlock<ArmchairBlock>> ARMCHAIRS = registerArmchairs();
 

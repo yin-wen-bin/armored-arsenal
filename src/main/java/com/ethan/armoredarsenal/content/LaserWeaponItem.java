@@ -6,6 +6,8 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 
 public class LaserWeaponItem extends Item {
@@ -27,10 +29,19 @@ public class LaserWeaponItem extends Item {
         }
 
         if (player instanceof ServerPlayer serverPlayer) {
+            if (profile == WeaponProfile.LASER_RIFLE) {
+                ItemStack weapon = player.getItemInHand(hand);
+                if (player.isCrouching()) {
+                    ManualReload.reload(serverPlayer, weapon, Items.REDSTONE, "redstone dust");
+                    return InteractionResult.SUCCESS_SERVER;
+                }
+                if (!ManualReload.requireLoaded(serverPlayer, weapon, "Laser Rifle")) {
+                    return InteractionResult.FAIL;
+                }
+            }
             LaserLogic.fireWeapon(serverPlayer, profile);
         }
 
         return InteractionResult.SUCCESS_SERVER;
     }
 }
-

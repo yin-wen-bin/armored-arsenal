@@ -10,6 +10,7 @@ import com.ethan.armoredarsenal.registry.ModItems;
 import com.ethan.armoredarsenal.registry.ModMenus;
 import com.ethan.armoredarsenal.server.ArmoredCommands;
 import com.ethan.armoredarsenal.server.ArmoredEvents;
+import com.ethan.armoredarsenal.server.ArsenalDimensionHandler;
 import com.ethan.armoredarsenal.server.BuildableEndPortalHandler;
 import com.ethan.armoredarsenal.server.CouchSittingHandler;
 import com.ethan.armoredarsenal.server.DelayedMinecartHandler;
@@ -51,6 +52,7 @@ public final class ArmoredArsenal {
         NeoForge.EVENT_BUS.addListener(WaterFloodTntHandler::beforeEntityTick);
         NeoForge.EVENT_BUS.addListener(RocketLogic::projectileImpact);
         NeoForge.EVENT_BUS.addListener(RocketLogic::beforeEntityTick);
+        NeoForge.EVENT_BUS.addListener(ArsenalDimensionHandler::chunkLoaded);
     }
 
     private static void registerPayloads(RegisterPayloadHandlersEvent event) {
