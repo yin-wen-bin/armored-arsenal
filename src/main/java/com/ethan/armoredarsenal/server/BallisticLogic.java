@@ -17,6 +17,7 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public final class BallisticLogic {
@@ -54,8 +55,11 @@ public final class BallisticLogic {
     }
 
     private static Optional<Hit> findHit(ServerLevel level, Entity owner, Vec3 start, Vec3 end) {
+        CollisionContext collisionContext = owner == null
+                ? CollisionContext.empty()
+                : CollisionContext.of(owner);
         HitResult blockHit = level.clip(new ClipContext(
-                start, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, owner));
+                start, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, collisionContext));
         Vec3 clippedEnd = blockHit.getType() == HitResult.Type.MISS ? end : blockHit.getLocation();
         AABB searchBox = new AABB(start, clippedEnd).inflate(1.0D);
         return level.getEntities(owner, searchBox, entity -> entity instanceof LivingEntity && entity.isPickable())
