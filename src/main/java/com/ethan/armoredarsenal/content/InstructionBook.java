@@ -194,6 +194,12 @@ public final class InstructionBook {
 
                         Mine underground for Arcanite Ore. Arcanite crafts into a complete tool and armor set using normal Minecraft recipe shapes.
                         """),                page("""
+                        Kitchen and Bathroom
+
+                        Counters, sinks, ovens, and toilets must be placed on a sturdy floor.
+
+                        Cabinets and kitchen towels attach to walls. Right-click the toilet to sit on it.
+                        """),                page("""
                         Material Golems
 
                         Build the normal iron golem shape, but use four matching blocks instead of iron.

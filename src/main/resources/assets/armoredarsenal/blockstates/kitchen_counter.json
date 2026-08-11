@@ -1,0 +1,1 @@
+{"variants":{"facing=north":{"model":"armoredarsenal:block/kitchen_counter"},"facing=east":{"model":"armoredarsenal:block/kitchen_counter","y":90},"facing=south":{"model":"armoredarsenal:block/kitchen_counter","y":180},"facing=west":{"model":"armoredarsenal:block/kitchen_counter","y":270}}}

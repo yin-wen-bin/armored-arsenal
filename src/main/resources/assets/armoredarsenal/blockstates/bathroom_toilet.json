@@ -1,0 +1,1 @@
+{"variants":{"facing=north":{"model":"armoredarsenal:block/bathroom_toilet"},"facing=east":{"model":"armoredarsenal:block/bathroom_toilet","y":90},"facing=south":{"model":"armoredarsenal:block/bathroom_toilet","y":180},"facing=west":{"model":"armoredarsenal:block/bathroom_toilet","y":270}}}

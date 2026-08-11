@@ -5,6 +5,9 @@ import com.ethan.armoredarsenal.content.ArmchairBlock;
 import com.ethan.armoredarsenal.content.AutoTurretBlock;
 import com.ethan.armoredarsenal.content.CouchBlock;
 import com.ethan.armoredarsenal.content.PortableLaserBlock;
+import com.ethan.armoredarsenal.content.FloorFurnitureBlock;
+import com.ethan.armoredarsenal.content.ToiletBlock;
+import com.ethan.armoredarsenal.content.WallFurnitureBlock;
 import com.ethan.armoredarsenal.content.WallTvBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -39,6 +42,24 @@ public final class ModBlocks {
             "arcanite_ore", properties -> new net.minecraft.world.level.block.DropExperienceBlock(
                     net.minecraft.util.valueproviders.UniformInt.of(4, 8), properties),
             () -> BlockBehaviour.Properties.of().strength(4.5F, 6.0F).requiresCorrectToolForDrops().sound(SoundType.STONE));
+    public static final DeferredBlock<FloorFurnitureBlock> KITCHEN_COUNTER = BLOCKS.registerBlock(
+            "kitchen_counter", FloorFurnitureBlock::new,
+            () -> BlockBehaviour.Properties.of().strength(2.5F).sound(SoundType.WOOD));
+    public static final DeferredBlock<FloorFurnitureBlock> KITCHEN_SINK = BLOCKS.registerBlock(
+            "kitchen_sink", FloorFurnitureBlock::new,
+            () -> BlockBehaviour.Properties.of().strength(3.0F).sound(SoundType.METAL));
+    public static final DeferredBlock<WallFurnitureBlock> KITCHEN_CABINET = BLOCKS.registerBlock(
+            "kitchen_cabinet", WallFurnitureBlock::new,
+            () -> BlockBehaviour.Properties.of().strength(2.5F).sound(SoundType.WOOD).noOcclusion());
+    public static final DeferredBlock<WallFurnitureBlock> KITCHEN_TOWEL = BLOCKS.registerBlock(
+            "kitchen_towel", WallFurnitureBlock::new,
+            () -> BlockBehaviour.Properties.of().strength(0.4F).sound(SoundType.WOOL).noOcclusion());
+    public static final DeferredBlock<FloorFurnitureBlock> KITCHEN_OVEN = BLOCKS.registerBlock(
+            "kitchen_oven", FloorFurnitureBlock::new,
+            () -> BlockBehaviour.Properties.of().strength(3.5F).sound(SoundType.METAL).lightLevel(state -> 2));
+    public static final DeferredBlock<ToiletBlock> BATHROOM_TOILET = BLOCKS.registerBlock(
+            "bathroom_toilet", ToiletBlock::new,
+            () -> BlockBehaviour.Properties.of().strength(2.0F).sound(SoundType.STONE).noOcclusion());
     public static final Map<String, DeferredBlock<CouchBlock>> COUCHES = registerCouches();
     public static final Map<String, DeferredBlock<ArmchairBlock>> ARMCHAIRS = registerArmchairs();
 

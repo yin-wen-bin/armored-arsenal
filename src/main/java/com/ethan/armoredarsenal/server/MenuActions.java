@@ -78,6 +78,12 @@ public final class MenuActions {
                 give(player, ModItems.PORTABLE_LASER.get());
                 give(player, ModItems.PORTABLE_LASER.get());
                 give(player, ModItems.AUTO_TURRET.get());
+                give(player, ModItems.KITCHEN_COUNTER.get());
+                give(player, ModItems.KITCHEN_SINK.get());
+                give(player, ModItems.KITCHEN_CABINET.get());
+                give(player, ModItems.KITCHEN_TOWEL.get());
+                give(player, ModItems.KITCHEN_OVEN.get());
+                give(player, ModItems.BATHROOM_TOILET.get());
                 giveMany(player,
                         stack(ModItems.ARCANITE.get(), 64),
                         stack(ModItems.ARCANITE_PICKAXE.get(), 1),

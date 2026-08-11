@@ -1,0 +1,1 @@
+{"variants":{"facing=north":{"model":"armoredarsenal:block/kitchen_sink"},"facing=east":{"model":"armoredarsenal:block/kitchen_sink","y":90},"facing=south":{"model":"armoredarsenal:block/kitchen_sink","y":180},"facing=west":{"model":"armoredarsenal:block/kitchen_sink","y":270}}}

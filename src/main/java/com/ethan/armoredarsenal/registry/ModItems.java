@@ -94,6 +94,18 @@ public final class ModItems {
             ITEMS.registerSimpleBlockItem("portable_laser", ModBlocks.PORTABLE_LASER);
     public static final DeferredItem<BlockItem> AUTO_TURRET =
             ITEMS.registerSimpleBlockItem("auto_turret", ModBlocks.AUTO_TURRET);
+    public static final DeferredItem<BlockItem> KITCHEN_COUNTER =
+            ITEMS.registerSimpleBlockItem("kitchen_counter", ModBlocks.KITCHEN_COUNTER);
+    public static final DeferredItem<BlockItem> KITCHEN_SINK =
+            ITEMS.registerSimpleBlockItem("kitchen_sink", ModBlocks.KITCHEN_SINK);
+    public static final DeferredItem<BlockItem> KITCHEN_CABINET =
+            ITEMS.registerSimpleBlockItem("kitchen_cabinet", ModBlocks.KITCHEN_CABINET);
+    public static final DeferredItem<BlockItem> KITCHEN_TOWEL =
+            ITEMS.registerSimpleBlockItem("kitchen_towel", ModBlocks.KITCHEN_TOWEL);
+    public static final DeferredItem<BlockItem> KITCHEN_OVEN =
+            ITEMS.registerSimpleBlockItem("kitchen_oven", ModBlocks.KITCHEN_OVEN);
+    public static final DeferredItem<BlockItem> BATHROOM_TOILET =
+            ITEMS.registerSimpleBlockItem("bathroom_toilet", ModBlocks.BATHROOM_TOILET);
     public static final Map<String, DeferredItem<BlockItem>> COUCHES = registerCouches();
     public static final Map<String, DeferredItem<BlockItem>> ARMCHAIRS = registerArmchairs();
 

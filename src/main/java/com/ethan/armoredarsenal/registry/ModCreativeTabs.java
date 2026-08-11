@@ -52,6 +52,12 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.WALL_TV.get());
                         output.accept(ModItems.PORTABLE_LASER.get());
                         output.accept(ModItems.AUTO_TURRET.get());
+                        output.accept(ModItems.KITCHEN_COUNTER.get());
+                        output.accept(ModItems.KITCHEN_SINK.get());
+                        output.accept(ModItems.KITCHEN_CABINET.get());
+                        output.accept(ModItems.KITCHEN_TOWEL.get());
+                        output.accept(ModItems.KITCHEN_OVEN.get());
+                        output.accept(ModItems.BATHROOM_TOILET.get());
                         output.accept(InstructionBook.create());
                     })
                     .build());

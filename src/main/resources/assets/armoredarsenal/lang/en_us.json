@@ -65,5 +65,11 @@
     "item.armoredarsenal.arcanite_helmet": "Arcanite Helmet",
     "item.armoredarsenal.arcanite_chestplate": "Arcanite Chestplate",
     "item.armoredarsenal.arcanite_leggings": "Arcanite Leggings",
-    "item.armoredarsenal.arcanite_boots": "Arcanite Boots"
+    "item.armoredarsenal.arcanite_boots": "Arcanite Boots",
+    "block.armoredarsenal.kitchen_counter": "Kitchen Counter",
+    "block.armoredarsenal.kitchen_sink": "Kitchen Sink",
+    "block.armoredarsenal.kitchen_cabinet": "Kitchen Cabinet",
+    "block.armoredarsenal.kitchen_towel": "Kitchen Towel",
+    "block.armoredarsenal.kitchen_oven": "Kitchen Oven",
+    "block.armoredarsenal.bathroom_toilet": "Bathroom Toilet"
 }
