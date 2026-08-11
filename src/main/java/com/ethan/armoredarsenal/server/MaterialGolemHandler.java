@@ -16,7 +16,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Display;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.golem.IronGolem;
@@ -75,7 +74,23 @@ public final class MaterialGolemHandler {
         Entity entity = event.getEntity();
         if (entity.getPersistentData().getBooleanOr(DISPLAY_KEY, false) && entity.getVehicle() == null) {
             entity.discard();
+            return;
         }
+
+        if (entity instanceof IronGolem golem && !golem.level().isClientSide()
+                && golem.getPersistentData().contains(MATERIAL_KEY) && !hasMaterialBody(golem)) {
+            String materialName = golem.getPersistentData().getStringOr(MATERIAL_KEY, "minecraft:iron_block");
+            Identifier materialId = Identifier.tryParse(materialName);
+            if (materialId != null) {
+                golem.setInvisible(true);
+                addMaterialBody(golem, materialId);
+            }
+        }
+    }
+
+    private static boolean hasMaterialBody(IronGolem golem) {
+        return golem.getPassengers().stream()
+                .anyMatch(passenger -> passenger.getPersistentData().getBooleanOr(DISPLAY_KEY, false));
     }
 
     private static GolemPattern findPattern(ServerLevel level, BlockPos headPos) {
@@ -232,6 +247,8 @@ public final class MaterialGolemHandler {
         CompoundTag transformation = new CompoundTag();
         transformation.put("translation", vector(x, y, z));
         transformation.put("scale", vector(sx, sy, sz));
+        transformation.put("left_rotation", quaternionIdentity());
+        transformation.put("right_rotation", quaternionIdentity());
         nbt.put("transformation", transformation);
         try {
             Entity display = SummonCommand.createEntity(level.getServer().createCommandSourceStack(),
@@ -252,6 +269,14 @@ public final class MaterialGolemHandler {
         return values;
     }
 
+    private static ListTag quaternionIdentity() {
+        ListTag values = new ListTag();
+        values.add(FloatTag.valueOf(0.0F));
+        values.add(FloatTag.valueOf(0.0F));
+        values.add(FloatTag.valueOf(0.0F));
+        values.add(FloatTag.valueOf(1.0F));
+        return values;
+    }
     private static double clamp(double value, double min, double max) {
         return Math.max(min, Math.min(max, value));
     }
