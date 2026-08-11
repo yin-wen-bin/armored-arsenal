@@ -4,7 +4,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.FloatTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.commands.SummonCommand;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -12,6 +16,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Display;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.golem.IronGolem;
@@ -19,9 +24,16 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
 
 public final class MaterialGolemHandler {
-    private static final double BEDROCK_GOLEM_HEALTH = 500.0;
+    private static final String MATERIAL_KEY = "ArmoredArsenalGolemMaterial";
+    private static final String DURABILITY_KEY = "ArmoredArsenalGolemDurability";
+    private static final String DISPLAY_KEY = "ArmoredArsenalGolemDisplay";
+    private static final double SUPPORTED_HEALTH = 1024.0;
+    private static final double DIAMOND_EFFECTIVE_HEARTS = 99_999_999.0;
+    private static final double NETHERITE_EFFECTIVE_HEARTS = 999_999_999.0;
     private static final double BEDROCK_GOLEM_ATTACK = 45.0;
     private static final double BEDROCK_GOLEM_SPEED = 0.18;
 
@@ -38,6 +50,32 @@ public final class MaterialGolemHandler {
         Entity entity = event.getEntity();
         ServerPlayer player = entity instanceof ServerPlayer serverPlayer ? serverPlayer : null;
         spawnMaterialGolem(level, player, pattern);
+    }
+
+    public static void incomingDamage(LivingIncomingDamageEvent event) {
+        if (!(event.getEntity() instanceof IronGolem golem)) {
+            return;
+        }
+
+        CompoundTag data = golem.getPersistentData();
+        double durability = data.getDoubleOr(DURABILITY_KEY, 0.0);
+        if (durability < 1.0) {
+            return;
+        }
+
+        if (data.getStringOr(MATERIAL_KEY, "").equals("minecraft:bedrock")) {
+            event.setCanceled(true);
+            return;
+        }
+
+        event.setAmount((float)Math.max(0.000001, event.getAmount() * SUPPORTED_HEALTH / (durability * 2.0)));
+    }
+
+    public static void afterEntityTick(EntityTickEvent.Post event) {
+        Entity entity = event.getEntity();
+        if (entity.getPersistentData().getBooleanOr(DISPLAY_KEY, false) && entity.getVehicle() == null) {
+            entity.discard();
+        }
     }
 
     private static GolemPattern findPattern(ServerLevel level, BlockPos headPos) {
@@ -136,6 +174,11 @@ public final class MaterialGolemHandler {
         golem.setPersistenceRequired();
         golem.setCustomName(Component.literal(materialName(material) + " Golem"));
         golem.setCustomNameVisible(true);
+        Identifier materialId = BuiltInRegistries.BLOCK.getKey(material);
+        golem.getPersistentData().putString(MATERIAL_KEY, materialId.toString());
+        golem.getPersistentData().putDouble(DURABILITY_KEY, stats.effectiveHearts());
+        golem.setInvisible(true);
+        addMaterialBody(golem, materialId);
     }
 
     private static void setAttribute(IronGolem golem, net.minecraft.core.Holder<net.minecraft.world.entity.ai.attributes.Attribute> attribute, double value) {
@@ -147,7 +190,13 @@ public final class MaterialGolemHandler {
 
     private static GolemStats statsFor(ServerLevel level, GolemPattern pattern) {
         if (pattern.material().equals(Blocks.BEDROCK)) {
-            return new GolemStats(BEDROCK_GOLEM_HEALTH, BEDROCK_GOLEM_ATTACK, BEDROCK_GOLEM_SPEED, 1.0);
+            return new GolemStats(SUPPORTED_HEALTH, BEDROCK_GOLEM_ATTACK, BEDROCK_GOLEM_SPEED, 1.0, Double.MAX_VALUE);
+        }
+        if (pattern.material().equals(Blocks.NETHERITE_BLOCK)) {
+            return new GolemStats(SUPPORTED_HEALTH, 38.0, 0.20, 1.0, NETHERITE_EFFECTIVE_HEARTS);
+        }
+        if (pattern.material().equals(Blocks.DIAMOND_BLOCK)) {
+            return new GolemStats(SUPPORTED_HEALTH, 32.0, 0.22, 1.0, DIAMOND_EFFECTIVE_HEARTS);
         }
 
         float destroySpeed = pattern.materialState().getDestroySpeed(level, pattern.torsoPos());
@@ -158,7 +207,49 @@ public final class MaterialGolemHandler {
         double maxHealth = clamp(80.0 + toughness * 4.0, 60.0, 350.0);
         double attackDamage = clamp(10.0 + toughness * 0.25, 8.0, 30.0);
         double movementSpeed = clamp(0.28 - toughness * 0.0015, 0.18, 0.28);
-        return new GolemStats(maxHealth, attackDamage, movementSpeed, 1.0);
+        return new GolemStats(maxHealth, attackDamage, movementSpeed, 1.0, 0.0);
+    }
+
+    private static void addMaterialBody(IronGolem golem, Identifier materialId) {
+        addDisplay(golem, materialId, -0.55F, 0.55F, -0.35F, 1.10F, 1.15F, 0.70F);
+        addDisplay(golem, materialId, -1.15F, 0.65F, -0.30F, 0.60F, 1.75F, 0.60F);
+        addDisplay(golem, materialId, 0.55F, 0.65F, -0.30F, 0.60F, 1.75F, 0.60F);
+        addDisplay(golem, materialId, -0.50F, -0.95F, -0.25F, 0.45F, 1.55F, 0.50F);
+        addDisplay(golem, materialId, 0.05F, -0.95F, -0.25F, 0.45F, 1.55F, 0.50F);
+        addDisplay(golem, Identifier.fromNamespaceAndPath("minecraft", "carved_pumpkin"), -0.45F, 1.70F, -0.45F, 0.90F, 0.90F, 0.90F);
+    }
+
+    private static void addDisplay(IronGolem golem, Identifier blockId, float x, float y, float z,
+                                   float sx, float sy, float sz) {
+        if (!(golem.level() instanceof ServerLevel level)) {
+            return;
+        }
+
+        CompoundTag nbt = new CompoundTag();
+        CompoundTag blockState = new CompoundTag();
+        blockState.putString("Name", blockId.toString());
+        nbt.put("block_state", blockState);
+        CompoundTag transformation = new CompoundTag();
+        transformation.put("translation", vector(x, y, z));
+        transformation.put("scale", vector(sx, sy, sz));
+        nbt.put("transformation", transformation);
+        try {
+            Entity display = SummonCommand.createEntity(level.getServer().createCommandSourceStack(),
+                    BuiltInRegistries.ENTITY_TYPE.get(BuiltInRegistries.ENTITY_TYPE.getKey(EntityType.BLOCK_DISPLAY)).orElseThrow(),
+                    golem.position(), nbt, false);
+            display.getPersistentData().putBoolean(DISPLAY_KEY, true);
+            display.startRiding(golem, true, true);
+        } catch (Exception ignored) {
+            // A missing block model should not prevent the combat entity from spawning.
+        }
+    }
+
+    private static ListTag vector(float x, float y, float z) {
+        ListTag values = new ListTag();
+        values.add(FloatTag.valueOf(x));
+        values.add(FloatTag.valueOf(y));
+        values.add(FloatTag.valueOf(z));
+        return values;
     }
 
     private static double clamp(double value, double min, double max) {
@@ -192,7 +283,8 @@ public final class MaterialGolemHandler {
         }
     }
 
-    private record GolemStats(double maxHealth, double attackDamage, double movementSpeed, double knockbackResistance) {}
+    private record GolemStats(double maxHealth, double attackDamage, double movementSpeed,
+                              double knockbackResistance, double effectiveHearts) {}
 
     private MaterialGolemHandler() {}
 }

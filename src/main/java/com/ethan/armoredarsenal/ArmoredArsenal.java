@@ -41,6 +41,8 @@ public final class ArmoredArsenal {
         NeoForge.EVENT_BUS.addListener(ArmoredEvents::playerTick);
         NeoForge.EVENT_BUS.addListener(ArmoredEvents::livingFall);
         NeoForge.EVENT_BUS.addListener(MaterialGolemHandler::blockPlaced);
+        NeoForge.EVENT_BUS.addListener(MaterialGolemHandler::incomingDamage);
+        NeoForge.EVENT_BUS.addListener(MaterialGolemHandler::afterEntityTick);
         NeoForge.EVENT_BUS.addListener(BuildableEndPortalHandler::rightClickBlock);
         NeoForge.EVENT_BUS.addListener(CouchSittingHandler::rightClickBlock);
         NeoForge.EVENT_BUS.addListener(CouchSittingHandler::beforeEntityTick);
