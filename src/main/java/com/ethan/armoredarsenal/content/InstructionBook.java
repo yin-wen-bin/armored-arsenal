@@ -129,6 +129,8 @@ public final class InstructionBook {
                         /fill netherite uses netherite blocks.
                         /walls stone builds its four walls.
 
+                        Look at a structure and type //giant to make the structure and its nearby surroundings three times larger. No coordinates or axe selection are needed.
+
                         Full block names like oak_planks also work.
                         """),
                 page("""

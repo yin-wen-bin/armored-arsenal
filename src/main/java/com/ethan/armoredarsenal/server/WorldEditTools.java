@@ -37,6 +37,7 @@ public final class WorldEditTools {
         dispatcher.register(command("we"));
         dispatcher.register(fillCommand("set", FillMode.SOLID));
         dispatcher.register(fillCommand("walls", FillMode.WALLS));
+        dispatcher.register(GiantStructureTools.command());
         dispatcher.register(Commands.literal("wand").executes(context -> giveWand(context.getSource().getPlayerOrException())));
     }
 
@@ -45,7 +46,14 @@ public final class WorldEditTools {
             return;
         }
 
-        String[] parts = event.getParseResults().getReader().getString().trim().split("\\s+");
+        String raw = event.getParseResults().getReader().getString().trim();
+        if (raw.equalsIgnoreCase("/giant") || raw.equalsIgnoreCase("//giant")) {
+            CommandSourceStack source = event.getParseResults().getContext().getSource();
+            event.setParseResults(commandDispatcher.parse("giant", source));
+            return;
+        }
+
+        String[] parts = raw.split("\\s+");
         if (parts.length == 2 && parts[0].equalsIgnoreCase("fill")) {
             CommandSourceStack source = event.getParseResults().getContext().getSource();
             event.setParseResults(commandDispatcher.parse("we fill " + parts[1], source));
@@ -90,6 +98,7 @@ public final class WorldEditTools {
                 .then(Commands.literal("walls")
                         .executes(context -> showUsage(context.getSource().getPlayerOrException(), FillMode.WALLS))
                         .then(fillArgument(FillMode.WALLS)))
+                .then(GiantStructureTools.command())
                 .then(Commands.literal("clear").executes(context -> clearSelection(context.getSource().getPlayerOrException())))
                 .then(Commands.literal("wand").executes(context -> giveWand(context.getSource().getPlayerOrException())))
                 .then(Commands.literal("help").executes(context -> showHelp(context.getSource().getPlayerOrException())));
@@ -144,7 +153,7 @@ public final class WorldEditTools {
 
     private static int showHelp(ServerPlayer player) {
         player.sendSystemMessage(Component.literal(
-                "Wooden axe: right-click corner 1, then right-click corner 2. Use /we fill <block> or /walls <block>."),
+                "Wooden axe: right-click corner 1, then right-click corner 2. Use /we fill <block>, /walls <block>, or look at a structure and type //giant."),
                 false);
         return 1;
     }
