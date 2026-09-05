@@ -11,6 +11,7 @@ public final class ArmoredEvents {
             SuitPowerHandler.tick(player);
             TransformationHandler.tick(player);
             VillagePopulationHandler.tick(player);
+            WaterSlideTools.tickSliding(player);
         }
     }
 
@@ -23,4 +24,3 @@ public final class ArmoredEvents {
 
     private ArmoredEvents() {}
 }
-

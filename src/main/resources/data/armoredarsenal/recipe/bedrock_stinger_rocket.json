@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "armoredarsenal:stinger_rocket"
+    },
+    {
+      "item": "minecraft:bedrock"
+    }
+  ],
+  "result": {
+    "id": "armoredarsenal:bedrock_stinger_rocket",
+    "count": 1
+  }
+}

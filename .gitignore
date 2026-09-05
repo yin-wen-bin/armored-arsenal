@@ -13,3 +13,6 @@ hs_err_pid*
 replay_pid*
 logs/
 download-site/
+/server/
+/Minecraft 2.0/
+*.log

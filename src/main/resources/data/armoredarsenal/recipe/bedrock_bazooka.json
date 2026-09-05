@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "armoredarsenal:bazooka"
+    },
+    {
+      "item": "minecraft:bedrock"
+    }
+  ],
+  "result": {
+    "id": "armoredarsenal:bedrock_bazooka",
+    "count": 1
+  }
+}

@@ -18,6 +18,7 @@ import com.ethan.armoredarsenal.server.MaterialGolemHandler;
 import com.ethan.armoredarsenal.server.RocketLogic;
 import com.ethan.armoredarsenal.server.VillagePopulationHandler;
 import com.ethan.armoredarsenal.server.WorldEditTools;
+import com.ethan.armoredarsenal.server.ThrowEnchantHandler;
 import com.ethan.armoredarsenal.server.WaterFloodTntHandler;
 import net.minecraft.resources.Identifier;
 import net.neoforged.bus.api.IEventBus;
@@ -53,6 +54,8 @@ public final class ArmoredArsenal {
         NeoForge.EVENT_BUS.addListener(WorldEditTools::leftClickBlock);
         NeoForge.EVENT_BUS.addListener(WaterFloodTntHandler::beforeEntityTick);
         NeoForge.EVENT_BUS.addListener(RocketLogic::projectileImpact);
+        NeoForge.EVENT_BUS.addListener(ThrowEnchantHandler::rightClickItem);
+        NeoForge.EVENT_BUS.addListener(ThrowEnchantHandler::projectileImpact);
         NeoForge.EVENT_BUS.addListener(RocketLogic::beforeEntityTick);
         NeoForge.EVENT_BUS.addListener(ArsenalDimensionHandler::chunkLoaded);
     }

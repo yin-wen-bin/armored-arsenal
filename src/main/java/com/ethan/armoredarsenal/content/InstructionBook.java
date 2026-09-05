@@ -149,7 +149,9 @@ public final class InstructionBook {
                         /transform warden gives massive strength and health.
 
                         Use any living mob name.
-                        As a Warden, aim at a target within 20 blocks and type /power or /sonicboom.
+                        Type /power to use that mob's active power. Blaze fires a volley, Wither shoots skulls, and Ender Dragon launches damaging dragon breath.
+
+                        As a Warden, aim within 20 blocks and use /power or /sonicboom.
                         Type /transform clear to return to normal.
                         """),
                 page("""

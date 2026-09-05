@@ -6,6 +6,7 @@ import com.ethan.armoredarsenal.client.screen.GunSelectorScreen;
 import com.ethan.armoredarsenal.client.screen.SuitSelectorScreen;
 import com.ethan.armoredarsenal.registry.ModMenus;
 import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.commands.Commands;
 import net.neoforged.api.distmarker.Dist;
@@ -22,6 +23,7 @@ import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 
 @EventBusSubscriber(modid = ArmoredArsenal.MOD_ID, value = Dist.CLIENT)
 public final class ClientEvents {
+    private static boolean slideKeyWasDown;
     @SubscribeEvent
     public static void registerScreens(RegisterMenuScreensEvent event) {
         event.register(ModMenus.SUIT_SELECTOR.get(), SuitSelectorScreen::new);
@@ -32,6 +34,8 @@ public final class ClientEvents {
     @SubscribeEvent
     public static void registerGuiLayers(RegisterGuiLayersEvent event) {
         event.registerAbove(VanillaGuiLayers.SELECTED_ITEM_NAME, ArmoredArsenal.id("suit_hud"), new SuitHudLayer());
+        event.registerAbove(VanillaGuiLayers.BOSS_OVERLAY, ArmoredArsenal.id("warden_megaboss_hud"),
+                new WardenMegabossHudLayer());
     }
 
     @SubscribeEvent
@@ -57,6 +61,17 @@ public final class ClientEvents {
     @SubscribeEvent
     public static void clientTick(ClientTickEvent.Post event) {
         ClientLaserBeams.clientTick(event);
+        Minecraft minecraft = Minecraft.getInstance();
+        if (minecraft.player == null || minecraft.screen != null) {
+            slideKeyWasDown = false;
+            return;
+        }
+        boolean slideKeyDown = minecraft.player.isShiftKeyDown()
+                && InputConstants.isKeyDown(minecraft.getWindow(), 85);
+        if (slideKeyDown && !slideKeyWasDown) {
+            minecraft.player.connection.sendCommand("slideposition");
+        }
+        slideKeyWasDown = slideKeyDown;
     }
 
     @SubscribeEvent

@@ -48,6 +48,8 @@ public final class ArmoredCommands {
 
         WorldEditTools.registerCommands(dispatcher);
         TransformationHandler.registerCommands(dispatcher);
+        WaterSlideTools.registerCommands(dispatcher);
+        ThrowEnchantHandler.registerCommands(dispatcher);
         dispatcher.register(Commands.literal("rollercoaster")
                 .executes(context -> teleportToRollercoaster(context.getSource().getPlayerOrException())));
         dispatcher.register(Commands.literal("clearmobs")

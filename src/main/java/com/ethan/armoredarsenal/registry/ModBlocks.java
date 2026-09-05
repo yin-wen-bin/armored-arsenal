@@ -7,6 +7,7 @@ import com.ethan.armoredarsenal.content.CouchBlock;
 import com.ethan.armoredarsenal.content.PortableLaserBlock;
 import com.ethan.armoredarsenal.content.FloorFurnitureBlock;
 import com.ethan.armoredarsenal.content.ToiletBlock;
+import com.ethan.armoredarsenal.content.TrampolineBlock;
 import com.ethan.armoredarsenal.content.WallFurnitureBlock;
 import com.ethan.armoredarsenal.content.WallTvBlock;
 import net.minecraft.world.level.block.SoundType;
@@ -60,8 +61,12 @@ public final class ModBlocks {
     public static final DeferredBlock<ToiletBlock> BATHROOM_TOILET = BLOCKS.registerBlock(
             "bathroom_toilet", ToiletBlock::new,
             () -> BlockBehaviour.Properties.of().strength(2.0F).sound(SoundType.STONE).noOcclusion());
+    public static final DeferredBlock<net.minecraft.world.level.block.Block> WATER_SLIDE_SURFACE = BLOCKS.registerSimpleBlock(
+            "water_slide_surface",
+            () -> BlockBehaviour.Properties.of().strength(2.0F).sound(SoundType.GLASS).noOcclusion());
     public static final Map<String, DeferredBlock<CouchBlock>> COUCHES = registerCouches();
     public static final Map<String, DeferredBlock<ArmchairBlock>> ARMCHAIRS = registerArmchairs();
+    public static final Map<String, DeferredBlock<TrampolineBlock>> TRAMPOLINES = registerTrampolines();
 
     private static Map<String, DeferredBlock<CouchBlock>> registerCouches() {
         Map<String, DeferredBlock<CouchBlock>> blocks = new LinkedHashMap<>();
@@ -80,6 +85,16 @@ public final class ModBlocks {
             blocks.put(color, BLOCKS.registerBlock(
                     color + "_armchair", ArmchairBlock::new,
                     () -> BlockBehaviour.Properties.of().strength(1.5F).sound(SoundType.WOOL).noOcclusion()));
+        }
+        return Collections.unmodifiableMap(blocks);
+    }
+
+    private static Map<String, DeferredBlock<TrampolineBlock>> registerTrampolines() {
+        Map<String, DeferredBlock<TrampolineBlock>> blocks = new LinkedHashMap<>();
+        for (String color : FURNITURE_COLORS) {
+            blocks.put(color, BLOCKS.registerBlock(
+                    color + "_trampoline", TrampolineBlock::new,
+                    () -> BlockBehaviour.Properties.of().strength(1.8F).sound(SoundType.WOOL).noOcclusion()));
         }
         return Collections.unmodifiableMap(blocks);
     }

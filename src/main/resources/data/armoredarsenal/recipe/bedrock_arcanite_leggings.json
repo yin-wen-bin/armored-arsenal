@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "armoredarsenal:arcanite_leggings"
+    },
+    {
+      "item": "minecraft:bedrock"
+    }
+  ],
+  "result": {
+    "id": "armoredarsenal:bedrock_arcanite_leggings",
+    "count": 1
+  }
+}

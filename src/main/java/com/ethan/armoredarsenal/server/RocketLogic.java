@@ -1,8 +1,8 @@
 package com.ethan.armoredarsenal.server;
 
+import com.ethan.armoredarsenal.content.LauncherProfile;
 import com.ethan.armoredarsenal.content.RocketItem;
 import com.ethan.armoredarsenal.content.RocketProfile;
-import com.ethan.armoredarsenal.content.LauncherProfile;
 import com.ethan.armoredarsenal.registry.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -10,17 +10,23 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.FireworkRocketEntity;
 import net.minecraft.world.entity.projectile.throwableitemprojectile.Snowball;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 
 public final class RocketLogic {
+    private static final double CROSSBOW_FIREWORK_RADIUS = 5.0D;
+    private static final float CROSSBOW_FIREWORK_DAMAGE = 5.0F;
+
     public static void launchFromPlayer(ServerPlayer player, InteractionHand hand, RocketProfile profile) {
         ItemStack stack = player.getItemInHand(hand);
         if (player.getCooldowns().isOnCooldown(stack)) {
@@ -87,6 +93,12 @@ public final class RocketLogic {
     }
 
     public static void projectileImpact(ProjectileImpactEvent event) {
+        if (event.getProjectile() instanceof FireworkRocketEntity firework) {
+            applyCrossbowFireworkDamage(firework);
+            event.setCanceled(true);
+            return;
+        }
+
         if (!(event.getProjectile() instanceof Snowball rocket)
                 || !(rocket.getItem().getItem() instanceof RocketItem rocketItem)
                 || !(rocket.level() instanceof ServerLevel level)) {
@@ -99,6 +111,26 @@ public final class RocketLogic {
                 profile.explosionPower(), Level.ExplosionInteraction.TNT);
         rocket.discard();
         event.setCanceled(true);
+    }
+
+    private static void applyCrossbowFireworkDamage(FireworkRocketEntity firework) {
+        if (!firework.isShotAtAngle() || !(firework.level() instanceof ServerLevel level)) {
+            return;
+        }
+
+        Entity owner = firework.getOwner();
+        Entity damageSourceEntity = owner == null ? firework : owner;
+
+        AABB blast = firework.getBoundingBox().inflate(CROSSBOW_FIREWORK_RADIUS);
+        for (LivingEntity target : level.getEntitiesOfClass(LivingEntity.class, blast)) {
+            if (!target.isAlive() || target == damageSourceEntity) {
+                continue;
+            }
+
+            target.hurtServer(level, level.damageSources().fireworks(firework, damageSourceEntity), CROSSBOW_FIREWORK_DAMAGE);
+        }
+
+        firework.discard();
     }
 
     public static void beforeEntityTick(EntityTickEvent.Pre event) {
