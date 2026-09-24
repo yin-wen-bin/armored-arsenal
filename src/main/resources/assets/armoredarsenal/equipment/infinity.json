@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "armoredarsenal:infinity/outer"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "armoredarsenal:infinity/inner"
+      }
+    ]
+  }
+}

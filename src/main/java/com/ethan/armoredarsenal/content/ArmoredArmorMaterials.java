@@ -26,6 +26,9 @@ public final class ArmoredArmorMaterials {
     public static final ResourceKey<EquipmentAsset> MARK_15_ASSET =
             ResourceKey.create(EquipmentAssets.ROOT_ID, ArmoredArsenal.id("mark_15"));
 
+    public static final ResourceKey<EquipmentAsset> INFINITY_ASSET =
+            ResourceKey.create(EquipmentAssets.ROOT_ID, ArmoredArsenal.id("infinity"));
+
     public static final ArmorMaterial MARK_15 = new ArmorMaterial(
             40,
             Util.make(new EnumMap<>(ArmorType.class), defense -> {
@@ -41,6 +44,22 @@ public final class ArmoredArmorMaterials {
             0.18F,
             ItemTags.REPAIRS_NETHERITE_ARMOR,
             MARK_15_ASSET);
+
+    public static final ArmorMaterial INFINITY = new ArmorMaterial(
+            48,
+            Util.make(new EnumMap<>(ArmorType.class), defense -> {
+                defense.put(ArmorType.BOOTS, 5);
+                defense.put(ArmorType.LEGGINGS, 8);
+                defense.put(ArmorType.CHESTPLATE, 10);
+                defense.put(ArmorType.HELMET, 5);
+                defense.put(ArmorType.BODY, 8);
+            }),
+            30,
+            SoundEvents.ARMOR_EQUIP_NETHERITE,
+            4.0F,
+            0.22F,
+            ItemTags.REPAIRS_NETHERITE_ARMOR,
+            INFINITY_ASSET);
 
     public static final ResourceKey<EquipmentAsset> ARCANITE_ASSET =
             ResourceKey.create(EquipmentAssets.ROOT_ID, ArmoredArsenal.id("arcanite"));

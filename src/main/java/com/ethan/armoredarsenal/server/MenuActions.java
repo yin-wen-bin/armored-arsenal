@@ -16,10 +16,11 @@ public final class MenuActions {
     public static void handleSuitButton(ServerPlayer player, int id) {
         switch (id) {
             case SuitSelectorMenu.EQUIP_MARK_15 -> equipMark15(player);
+            case SuitSelectorMenu.EQUIP_INFINITY -> equipInfinity(player);
             case SuitSelectorMenu.TOGGLE_HOVER -> SuitPowerHandler.toggleHover(player);
             case SuitSelectorMenu.FIRE_REPULSOR -> SuitPowerHandler.fireRepulsor(player);
             case SuitSelectorMenu.TOGGLE_STEALTH -> SuitPowerHandler.toggleStealth(player);
-            case SuitSelectorMenu.REMOVE_SUIT -> removeMark15(player);
+            case SuitSelectorMenu.REMOVE_SUIT -> removePoweredSuit(player);
             default -> player.sendSystemMessage(Component.literal("Unknown suit action."), false);
         }
     }
@@ -98,11 +99,21 @@ public final class MenuActions {
     }
 
     public static void equipMark15(ServerPlayer player) {
+        SuitPowerHandler.clearSuitState(player);
         equip(player, EquipmentSlot.HEAD, ModItems.MARK_15_HELMET.get());
         equip(player, EquipmentSlot.CHEST, ModItems.MARK_15_CHESTPLATE.get());
         equip(player, EquipmentSlot.LEGS, ModItems.MARK_15_LEGGINGS.get());
         equip(player, EquipmentSlot.FEET, ModItems.MARK_15_BOOTS.get());
         player.sendSystemMessage(Component.literal("Mark 15-style powered suit equipped."), false);
+    }
+
+    public static void equipInfinity(ServerPlayer player) {
+        SuitPowerHandler.clearSuitState(player);
+        equip(player, EquipmentSlot.HEAD, ModItems.INFINITY_HELMET.get());
+        equip(player, EquipmentSlot.CHEST, ModItems.INFINITY_CHESTPLATE.get());
+        equip(player, EquipmentSlot.LEGS, ModItems.INFINITY_LEGGINGS.get());
+        equip(player, EquipmentSlot.FEET, ModItems.INFINITY_BOOTS.get());
+        player.sendSystemMessage(Component.literal("Infinity Armor equipped. Cosmic shield ready."), false);
     }
 
     public static void giveInstructionBook(ServerPlayer player) {
@@ -117,10 +128,10 @@ public final class MenuActions {
         player.sendSystemMessage(Component.literal("Added 2 stacks of bedrock for ethan0315."), false);
     }
 
-    private static void removeMark15(ServerPlayer player) {
+    private static void removePoweredSuit(ServerPlayer player) {
         for (EquipmentSlot slot : new EquipmentSlot[] {EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET}) {
             ItemStack equipped = player.getItemBySlot(slot);
-            if (SuitPowerHandler.isMark15Piece(equipped)) {
+            if (SuitPowerHandler.isPoweredArmorPiece(equipped)) {
                 insertOrDrop(player, equipped.copy());
                 player.setItemSlot(slot, ItemStack.EMPTY);
             }

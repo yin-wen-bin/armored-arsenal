@@ -57,26 +57,34 @@ public final class InstructionBook {
 
                         Type suits or /suits.
 
-                        Equip Mark 15 to wear the full powered armor set.
+                        Choose Mark 15 or Infinity Armor to equip a full powered set.
 
-                        Helmet: night vision.
-                        Full set: hover, fall protection, repulsor beam, stealth, and suit energy.
+                        Both sets: night vision, hover, flight, fall protection, an energy beam, and suit energy.
                         """),
                 page("""
-                        Hover + Stealth
+                        Mark 15 Special
 
                         Open suits.
 
                         Toggle Hover to slow falling and unlock flight controls while the full suit is worn.
 
-                        Toggle Stealth to turn invisible. Stealth drains energy over time.
+                        Toggle Special while wearing Mark 15 to turn invisible. Stealth drains energy over time.
+                        """),
+                page("""
+                        Infinity Armor
+
+                        Its obsidian, violet, and cyan design is completely original.
+
+                        The full set gives fire resistance, underwater breathing, and slow self-repair.
+
+                        Toggle Special activates a cosmic damage shield. The shield drains suit energy.
                         """),
                 page("""
                         Repulsor Beam
 
                         Open suits.
 
-                        Fire Repulsor shoots a beam from your view direction.
+                        Fire Energy Beam shoots a beam from your view direction.
 
                         It costs suit energy and has a cooldown, so wait if it says Repulsor charging.
                         """),

@@ -17,10 +17,19 @@ public final class SuitHudLayer implements GuiLayer {
             return;
         }
 
-        boolean hasHelmet = minecraft.player.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.MARK_15_HELMET.get());
-        boolean hasChest = minecraft.player.getItemBySlot(EquipmentSlot.CHEST).is(ModItems.MARK_15_CHESTPLATE.get());
-        boolean hasLegs = minecraft.player.getItemBySlot(EquipmentSlot.LEGS).is(ModItems.MARK_15_LEGGINGS.get());
-        boolean hasBoots = minecraft.player.getItemBySlot(EquipmentSlot.FEET).is(ModItems.MARK_15_BOOTS.get());
+        boolean infinityHelmet = minecraft.player.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.INFINITY_HELMET.get());
+        boolean infinityChest = minecraft.player.getItemBySlot(EquipmentSlot.CHEST).is(ModItems.INFINITY_CHESTPLATE.get());
+        boolean infinityLegs = minecraft.player.getItemBySlot(EquipmentSlot.LEGS).is(ModItems.INFINITY_LEGGINGS.get());
+        boolean infinityBoots = minecraft.player.getItemBySlot(EquipmentSlot.FEET).is(ModItems.INFINITY_BOOTS.get());
+        boolean infinity = infinityHelmet || infinityChest || infinityLegs || infinityBoots;
+        boolean hasHelmet = infinity ? infinityHelmet
+                : minecraft.player.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.MARK_15_HELMET.get());
+        boolean hasChest = infinity ? infinityChest
+                : minecraft.player.getItemBySlot(EquipmentSlot.CHEST).is(ModItems.MARK_15_CHESTPLATE.get());
+        boolean hasLegs = infinity ? infinityLegs
+                : minecraft.player.getItemBySlot(EquipmentSlot.LEGS).is(ModItems.MARK_15_LEGGINGS.get());
+        boolean hasBoots = infinity ? infinityBoots
+                : minecraft.player.getItemBySlot(EquipmentSlot.FEET).is(ModItems.MARK_15_BOOTS.get());
         if (!hasHelmet && !hasChest && !hasLegs && !hasBoots) {
             return;
         }
@@ -29,9 +38,10 @@ public final class SuitHudLayer implements GuiLayer {
         int x = 10;
         int y = graphics.guiHeight() - 58;
         String ready = hasHelmet && hasChest && hasLegs && hasBoots ? "READY" : "PARTIAL";
-        graphics.text(font, Component.literal("MARK 15 " + ready), x, y, 0xFFE6C15A);
+        String armorName = infinity ? "INFINITY" : "MARK 15";
+        int armorColor = infinity ? 0xFF41E8FF : 0xFFE6C15A;
+        graphics.text(font, Component.literal(armorName + " " + ready), x, y, armorColor);
         graphics.text(font, Component.literal("Health " + Math.round(minecraft.player.getHealth()) + " / "
                 + Math.round(minecraft.player.getMaxHealth())), x, y + font.lineHeight + 2, 0xFFFFFFFF);
     }
 }
-

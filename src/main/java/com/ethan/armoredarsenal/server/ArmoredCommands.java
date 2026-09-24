@@ -20,6 +20,7 @@ import net.neoforged.neoforge.event.ServerChatEvent;
 public final class ArmoredCommands {
     public static void registerCommands(RegisterCommandsEvent event) {
         CommandDispatcher<CommandSourceStack> dispatcher = event.getDispatcher();
+        PublicGameModeCommand.register(dispatcher);
 
         dispatcher.register(Commands.literal("suits").executes(context -> {
             openSuitMenu(context.getSource().getPlayerOrException());

@@ -33,6 +33,7 @@ Download the latest mod and friend installation pack from [GitHub Releases](http
 ## Current V1 Features
 
 - Mark 15-inspired powered armor using original mod assets.
+- Original Infinity Armor with cosmic visuals, flight, environmental protection, self-repair, and an energy-powered shield.
 - Full-suit flight/hover, fall protection, stealth, night vision, and repulsor firing.
 - Laser rifle, pulse pistol, beam cannon, and charged sniper laser.
 - Wooden-axe WorldEdit selection with safe `/worldedit` and `/we` fill commands.

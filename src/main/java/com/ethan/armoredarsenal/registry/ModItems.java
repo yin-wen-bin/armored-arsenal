@@ -34,6 +34,18 @@ public final class ModItems {
     public static final DeferredItem<Item> MARK_15_BOOTS = ITEMS.registerItem(
             "mark_15_boots",
             properties -> new Item(properties.humanoidArmor(ArmoredArmorMaterials.MARK_15, ArmorType.BOOTS)));
+    public static final DeferredItem<Item> INFINITY_HELMET = ITEMS.registerItem(
+            "infinity_helmet",
+            properties -> new Item(properties.humanoidArmor(ArmoredArmorMaterials.INFINITY, ArmorType.HELMET).rarity(Rarity.EPIC)));
+    public static final DeferredItem<Item> INFINITY_CHESTPLATE = ITEMS.registerItem(
+            "infinity_chestplate",
+            properties -> new Item(properties.humanoidArmor(ArmoredArmorMaterials.INFINITY, ArmorType.CHESTPLATE).rarity(Rarity.EPIC)));
+    public static final DeferredItem<Item> INFINITY_LEGGINGS = ITEMS.registerItem(
+            "infinity_leggings",
+            properties -> new Item(properties.humanoidArmor(ArmoredArmorMaterials.INFINITY, ArmorType.LEGGINGS).rarity(Rarity.EPIC)));
+    public static final DeferredItem<Item> INFINITY_BOOTS = ITEMS.registerItem(
+            "infinity_boots",
+            properties -> new Item(properties.humanoidArmor(ArmoredArmorMaterials.INFINITY, ArmorType.BOOTS).rarity(Rarity.EPIC)));
     public static final DeferredItem<BlockItem> ARCANITE_ORE =
             ITEMS.registerSimpleBlockItem("arcanite_ore", ModBlocks.ARCANITE_ORE);
     public static final DeferredItem<Item> ARCANITE = ITEMS.registerSimpleItem("arcanite");

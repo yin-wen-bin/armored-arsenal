@@ -64,6 +64,26 @@ tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
 
+sourceSets {
+    permissionTest {
+        compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath
+        runtimeClasspath += sourceSets.main.output + sourceSets.main.runtimeClasspath
+    }
+}
+
+tasks.register('testGameModePermissions', JavaExec) {
+    dependsOn tasks.named('permissionTestClasses')
+    classpath = sourceSets.permissionTest.runtimeClasspath
+    mainClass = 'com.ethan.armoredarsenal.server.PublicGameModeCommandTest'
+    javaLauncher = javaToolchains.launcherFor {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+}
+
+tasks.named('check') {
+    dependsOn tasks.named('testGameModePermissions')
+}
+
 processResources {
     def replaceProperties = [
             minecraft_version      : minecraft_version,

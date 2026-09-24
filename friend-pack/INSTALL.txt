@@ -1,0 +1,17 @@
+ARMORED ARSENAL FRIEND INSTALL
+
+Required versions:
+- Minecraft Java 26.1.2
+- NeoForge 26.1.2.76
+- Java 25
+
+1. Close Minecraft completely.
+2. Open the mods folder used by the NeoForge 26.1.2 profile.
+3. Remove every older armoredarsenal JAR from that mods folder.
+4. Copy armoredarsenal-0.1.0.jar from this pack into the mods folder.
+5. Start the NeoForge 26.1.2 profile and join Ethan's server.
+
+Do not keep two Armored Arsenal JARs in the same mods folder.
+
+Matching SHA-256:
+17F8C95C81B6763D992945D5752081EC8A421231D5D5F1D1674A9898C9669AB1

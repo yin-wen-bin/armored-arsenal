@@ -24,6 +24,10 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.MARK_15_CHESTPLATE.get());
                         output.accept(ModItems.MARK_15_LEGGINGS.get());
                         output.accept(ModItems.MARK_15_BOOTS.get());
+                        output.accept(ModItems.INFINITY_HELMET.get());
+                        output.accept(ModItems.INFINITY_CHESTPLATE.get());
+                        output.accept(ModItems.INFINITY_LEGGINGS.get());
+                        output.accept(ModItems.INFINITY_BOOTS.get());
                         output.accept(ModItems.ARCANITE_ORE.get());
                         output.accept(ModItems.ARCANITE.get());
                         output.accept(ModItems.BEDROCK_ARCANITE.get());

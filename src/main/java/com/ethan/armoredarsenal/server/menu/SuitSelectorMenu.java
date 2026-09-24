@@ -11,6 +11,7 @@ public class SuitSelectorMenu extends ActionMenu {
     public static final int FIRE_REPULSOR = 2;
     public static final int TOGGLE_STEALTH = 3;
     public static final int REMOVE_SUIT = 4;
+    public static final int EQUIP_INFINITY = 5;
 
     public SuitSelectorMenu(int containerId) {
         super(ModMenus.SUIT_SELECTOR.get(), containerId);
@@ -25,4 +26,3 @@ public class SuitSelectorMenu extends ActionMenu {
         return false;
     }
 }
-
