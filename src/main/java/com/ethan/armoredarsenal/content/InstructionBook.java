@@ -220,6 +220,14 @@ public final class InstructionBook {
 
                         Example: four bedrock blocks make a Bedrock Golem with huge health.
                         """),                page("""
+                        Wither Storm
+
+                        Type /witherstorm or chat message witherstorm to summon the giant three-phase boss.
+
+                        Its gravity pull and minion waves grow stronger as its health falls.
+
+                        Type /witherstorm clear to remove it in an emergency. It is destructive, so summon it far from important builds.
+                        """),                page("""
                         Quick Start
 
                         1. Type suits.

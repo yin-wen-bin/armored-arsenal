@@ -17,6 +17,7 @@ Download the latest mod and friend installation pack from [GitHub Releases](http
 - `/suits` or chat message `suits`: opens the suit selector.
 - `/guns` or chat message `guns`: opens the laser weapon selector.
 - `/items`: opens the survival-safe item supply menu.
+- `/witherstorm` or chat message `witherstorm`: summons the three-phase boss. `/witherstorm clear` removes it.
 - `/manual`, `/guide`, or chat messages `manual`, `guide`, `book`: gives the in-game instruction book.
 - Chat message `give ethan0315 bedrock`: gives the player two stacks of bedrock.
 - `/wand`: gives a wooden axe for WorldEdit selection. Right-click two opposite corners.
@@ -34,6 +35,7 @@ Download the latest mod and friend installation pack from [GitHub Releases](http
 
 - Mark 15-inspired powered armor using original mod assets.
 - Original Infinity Armor with cosmic visuals, flight, environmental protection, self-repair, and an energy-powered shield.
+- Giant three-phase Wither Storm boss with gravity pull and minion waves; summon it with `/witherstorm`.
 - Full-suit flight/hover, fall protection, stealth, night vision, and repulsor firing.
 - Laser rifle, pulse pistol, beam cannon, and charged sniper laser.
 - Wooden-axe WorldEdit selection with safe `/worldedit` and `/we` fill commands.

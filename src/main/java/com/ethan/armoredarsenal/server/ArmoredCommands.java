@@ -51,6 +51,7 @@ public final class ArmoredCommands {
         TransformationHandler.registerCommands(dispatcher);
         WaterSlideTools.registerCommands(dispatcher);
         ThrowEnchantHandler.registerCommands(dispatcher);
+        WitherStormHandler.registerCommands(dispatcher);
         dispatcher.register(Commands.literal("rollercoaster")
                 .executes(context -> teleportToRollercoaster(context.getSource().getPlayerOrException())));
         dispatcher.register(Commands.literal("clearmobs")
@@ -85,6 +86,10 @@ public final class ArmoredCommands {
             case "give ethan0315 bedrock" -> {
                 event.setCanceled(true);
                 MenuActions.giveBedrockStacks(event.getPlayer());
+            }
+            case "witherstorm" -> {
+                event.setCanceled(true);
+                WitherStormHandler.spawn(event.getPlayer());
             }
             default -> {
             }
