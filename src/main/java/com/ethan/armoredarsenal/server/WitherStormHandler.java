@@ -1,9 +1,14 @@
 package com.ethan.armoredarsenal.server;
 
 import com.ethan.armoredarsenal.ArmoredArsenal;
+import com.ethan.armoredarsenal.content.StormShape;
+import com.ethan.armoredarsenal.content.StormShape.HeadSpec;
+import com.ethan.armoredarsenal.network.LaserBeamPayload;
 import com.ethan.armoredarsenal.network.StormDeathPayload;
+import com.ethan.armoredarsenal.network.StormVisualPayload;
 import com.ethan.armoredarsenal.registry.ModItems;
 import com.mojang.brigadier.CommandDispatcher;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -12,16 +17,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.FloatTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.commands.SummonCommand;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -40,18 +41,12 @@ import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public final class WitherStormHandler {
-    private static final Logger LOGGER = LoggerFactory.getLogger(WitherStormHandler.class);
     private static final String MARKER = "ArmoredArsenalWitherStorm";
     private static final String PART = "ArmoredArsenalStormPart";
     private static final String OWNER = "ArmoredArsenalStormOwner";
-    private static final String HEAD = "ArmoredArsenalStormHead";
-    private static final String GROUP = "ArmoredArsenalStormBodyGroup";
-    private static final String ROUNDED = "ArmoredArsenalStormRoundedBodies";
-    private static final String FALLING = "ArmoredArsenalFallingBody";
+    private static final String SMOOTH = "ArmoredArsenalStormSmoothModel";
     private static final String DEATH_TICKS = "ArmoredArsenalStormDeathTicks";
     private static final String MIGRATED = "ArmoredArsenalStormNineHeaded";
     private static final String CORE_HIT = "ArmoredArsenalStormCoreHit";
@@ -62,14 +57,8 @@ public final class WitherStormHandler {
     private static final String RETURN_Z = "ArmoredArsenalStormReturnZ";
     private static final BlockPos CORE = new BlockPos(250000, 121, 8);
     private static final BlockPos ARRIVAL = new BlockPos(250000, 121, -7);
-    private static final HeadSpec[] HEADS = {
-            new HeadSpec(-5, 17, -5, 0), new HeadSpec(0, 18, -6, 0), new HeadSpec(5, 17, -5, 0),
-            new HeadSpec(-21, 6, -8, 1), new HeadSpec(-16, 7, -9, 1), new HeadSpec(-11, 6, -8, 1),
-            new HeadSpec(11, 6, -8, 2), new HeadSpec(16, 7, -9, 2), new HeadSpec(21, 6, -8, 2)
-    };
+    private static final BlockPos CORE_ROOM_MARKER = CORE.offset(15, 5, 0);
     private static final Map<UUID, Vec3> LAST_EYE = new ConcurrentHashMap<>();
-
-    private record HeadSpec(double x, double y, double z, int group) {}
 
     public static void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("witherstorm")
@@ -134,8 +123,7 @@ public final class WitherStormHandler {
             return 0;
         }
         level.setChunkForced(storm.chunkPosition().x(), storm.chunkPosition().z(), true);
-        buildBody(storm);
-        storm.getPersistentData().putBoolean(ROUNDED, true);
+        storm.getPersistentData().putBoolean(SMOOTH, true);
         level.playSound(null, pos, SoundEvents.WITHER_SPAWN, SoundSource.HOSTILE, 4.0F, 0.5F);
         level.getServer().getPlayerList().broadcastSystemMessage(
                 Component.literal("The nine-headed Wither Storm has appeared. Fly into a head to reach its core."), false);
@@ -182,16 +170,20 @@ public final class WitherStormHandler {
             storm.setInvisible(true);
             storm.setCustomName(Component.literal("WITHER STORM"));
         }
-        if (!storm.getPersistentData().getBooleanOr(ROUNDED, false)
-                && storm.getPersistentData().getIntOr(DEATH_TICKS, 0) == 0) {
+        if (!storm.getPersistentData().getBooleanOr(SMOOTH, false)) {
             cleanupParts(storm);
-            buildBody(storm);
-            storm.getPersistentData().putBoolean(ROUNDED, true);
-        }
-        if (storm.getPassengers().isEmpty() && storm.getPersistentData().getIntOr(DEATH_TICKS, 0) == 0) {
-            buildBody(storm);
+            storm.getPersistentData().putBoolean(SMOOTH, true);
         }
         int deathTicks = storm.getPersistentData().getIntOr(DEATH_TICKS, 0);
+        if (storm.tickCount % (deathTicks > 0 ? 2 : 5) == 0) {
+            StormVisualPayload visual = StormVisualPayload.at(level.dimension().identifier().toString(),
+                    storm.position(), deathTicks, false);
+            for (ServerPlayer player : level.players()) {
+                if (player.position().distanceToSqr(storm.position()) < 350.0 * 350.0) {
+                    PacketDistributor.sendToPlayer(player, visual);
+                }
+            }
+        }
         if (deathTicks > 0) {
             tickDeath(level, storm, deathTicks);
             return;
@@ -200,18 +192,17 @@ public final class WitherStormHandler {
             level.sendParticles(ParticleTypes.LARGE_SMOKE, storm.getX(), storm.getY() + 6.0, storm.getZ(),
                     16, 11.0, 8.0, 8.0, 0.02);
         }
-        if (storm.tickCount % 8 == 0) {
-            for (HeadSpec spec : HEADS) {
-                Vec3 mouth = headPosition(storm, spec).add(0.0, -1.0, -3.0);
-                Vec3 ground = mouth.add(0.0, -Math.min(25.0, mouth.y - level.getMinY()), -4.0);
-                tractorBeam(level, mouth, ground);
-            }
-        }
         if (storm.tickCount % 40 == 0) {
             ServerPlayer target = nearestSurvivalPlayer(level, storm.position(), 70.0);
             if (target != null) {
-                Vec3 head = headPosition(storm, HEADS[storm.getRandom().nextInt(HEADS.length)]);
-                purpleBeam(level, head.add(0.0, 0.0, -3.0), target.getEyePosition(), 0.5);
+                Vec3 head = headPosition(storm, StormShape.HEADS[storm.getRandom().nextBoolean() ? 4 : 7]);
+                LaserBeamPayload beam = LaserBeamPayload.between(storm.tickCount, head.add(0, -1, -3),
+                        target.getEyePosition(), 0xC9B049FF, 1.5F, 7);
+                for (ServerPlayer watcher : level.players()) {
+                    if (watcher.position().distanceToSqr(storm.position()) < 200.0 * 200.0) {
+                        PacketDistributor.sendToPlayer(watcher, beam);
+                    }
+                }
                 target.hurtServer(level, level.damageSources().magic(), 5.0F);
             }
         }
@@ -231,7 +222,7 @@ public final class WitherStormHandler {
                 || player.isSpectator() || player.position().distanceToSqr(storm.position()) > 48.0 * 48.0) {
             return;
         }
-        for (HeadSpec spec : HEADS) {
+        for (HeadSpec spec : StormShape.HEADS) {
             Vec3 head = headPosition(storm, spec).add(0.0, 0.0, -1.5);
             if (eye.distanceToSqr(head) <= 36.0
                     || previousEye != null && previousEye.distanceToSqr(eye) < 40.0 * 40.0
@@ -289,7 +280,8 @@ public final class WitherStormHandler {
             player.sendSystemMessage(Component.literal("The core chamber is unavailable."), false);
             return;
         }
-        if (!coreLevel.getBlockState(CORE).is(Blocks.COMMAND_BLOCK)) {
+        if (!coreLevel.getBlockState(CORE).is(Blocks.COMMAND_BLOCK)
+                || !coreLevel.getBlockState(CORE_ROOM_MARKER).is(Blocks.REINFORCED_DEEPSLATE)) {
             buildCoreRoom(coreLevel);
         }
         CompoundTag data = player.getPersistentData();
@@ -315,22 +307,41 @@ public final class WitherStormHandler {
             return;
         }
         int deathTicks = storm.getPersistentData().getIntOr(DEATH_TICKS, 0);
+        if (deathTicks == 0 && !player.level().getBlockState(CORE_ROOM_MARKER).is(Blocks.REINFORCED_DEEPSLATE)) {
+            buildCoreRoom(player.level());
+        }
+        if (player.tickCount % 5 == 0) {
+            PacketDistributor.sendToPlayer(player, StormVisualPayload.at(
+                    player.level().dimension().identifier().toString(),
+                    new Vec3(CORE.getX() + 0.5, CORE.getY() + 0.5, CORE.getZ() + 0.5),
+                    deathTicks, true));
+        }
         if (deathTicks > 0) {
             if (deathTicks >= 70) {
                 leaveCore(player);
             }
             return;
         }
-        if (player.tickCount % 10 == 0) {
+        if (player.tickCount % 5 == 0) {
             for (int side : new int[] {-1, 1}) {
-                Vec3 mouth = new Vec3(CORE.getX() + side * 6.0, 125.0, CORE.getZ() - 2.0);
+                Vec3 mouth = new Vec3(CORE.getX() + 0.5 + side * 6.0, 126.0, CORE.getZ() + 0.5);
                 Vec3 beamEnd = player.isCreative() || player.isSpectator()
                         ? mouth.add(0.0, -4.0, -8.0) : player.getEyePosition();
-                purpleBeam(player.level(), mouth, beamEnd, 0.45);
+                PacketDistributor.sendToPlayer(player, LaserBeamPayload.between(
+                        side < 0 ? -101 : -102, mouth, beamEnd, 0xB29B45F5, 1.0F, 8));
                 if (!player.isCreative() && !player.isSpectator()
                         && player.position().distanceToSqr(mouth) < 18.0 * 18.0
                         && player.tickCount % 40 == 0) {
                     player.hurtServer(player.level(), player.level().damageSources().magic(), 3.0F);
+                }
+            }
+        }
+        if (!player.isCreative() && !player.isSpectator() && player.tickCount % 30 == 0) {
+            Vec3 point = player.position();
+            for (int side : new int[] {-1, 1}) {
+                Vec3 guard = new Vec3(CORE.getX() + 0.5 + side * 3.5, 122.0, CORE.getZ() + 0.5);
+                if (point.distanceToSqr(guard) < 3.0 * 3.0) {
+                    player.hurtServer(player.level(), player.level().damageSources().magic(), 2.0F);
                 }
             }
         }
@@ -363,54 +374,22 @@ public final class WitherStormHandler {
             }
         }
         for (int side : new int[] {-1, 1}) {
-            int x = CORE.getX() + side * 6;
-            for (int dx = -2; dx <= 2; dx++) {
-                for (int dy = 3; dy <= 7; dy++) {
-                    for (int dz = 3; dz <= 5; dz++) {
-                        level.setBlock(new BlockPos(x + dx, 121 + dy, CORE.getZ() + dz),
-                                Blocks.BLACK_CONCRETE.defaultBlockState(), 2);
-                    }
-                }
-            }
-            for (int eye : new int[] {-1, 1}) {
-                level.setBlock(new BlockPos(x + eye, 126, CORE.getZ() + 2),
-                        Blocks.PURPLE_STAINED_GLASS.defaultBlockState(), 2);
-            }
-            level.setBlock(new BlockPos(x, 124, CORE.getZ() + 2),
-                    Blocks.CRYING_OBSIDIAN.defaultBlockState(), 2);
-            for (int segment = 0; segment < 7; segment++) {
-                level.setBlock(new BlockPos(CORE.getX() + side * (11 - segment), 121 + segment / 2,
-                        CORE.getZ() - 5 + segment), Blocks.BLACK_CONCRETE.defaultBlockState(), 2);
+            for (int front : new int[] {-1, 1}) {
+                BlockPos base = CORE.offset(side * 11, 0, front * 7);
+                level.setBlock(base, Blocks.CRYING_OBSIDIAN.defaultBlockState(), 2);
+                level.setBlock(base.above(), Blocks.BLACK_CONCRETE.defaultBlockState(), 2);
             }
         }
         level.setBlock(CORE.below(), Blocks.CRYING_OBSIDIAN.defaultBlockState(), 2);
         level.setBlockAndUpdate(CORE, Blocks.COMMAND_BLOCK.defaultBlockState());
+        level.setBlock(CORE_ROOM_MARKER, Blocks.REINFORCED_DEEPSLATE.defaultBlockState(), 2);
     }
 
     private static void tickDeath(ServerLevel level, WitherBoss storm, int tick) {
         storm.getPersistentData().putInt(DEATH_TICKS, tick + 1);
-        if (tick == 1) {
-            for (Entity passenger : List.copyOf(storm.getPassengers())) {
-                if (passenger.getPersistentData().getIntOr(GROUP, 0) != 0) {
-                    passenger.stopRiding();
-                    passenger.getPersistentData().putBoolean(FALLING, true);
-                }
-            }
-        }
-        for (Entity entity : level.getAllEntities()) {
-            if (entity != null && entity.getPersistentData().getBooleanOr(FALLING, false)
-                    && entity.getPersistentData().getStringOr(OWNER, "").equals(storm.getUUID().toString())) {
-                entity.setPos(storm.getX(), storm.getY() - Math.min(35.0, tick * 0.50), storm.getZ());
-                if (tick >= 65) {
-                    entity.discard();
-                }
-            }
-        }
-        if (tick >= 25) {
-            List<Entity> center = List.copyOf(storm.getPassengers());
-            if (!center.isEmpty()) {
-                center.get(storm.getRandom().nextInt(center.size())).discard();
-            }
+        if (tick == 1 || tick == 45) {
+            level.playSound(null, storm.blockPosition(), SoundEvents.WITHER_DEATH,
+                    SoundSource.HOSTILE, tick == 1 ? 4.0F : 2.0F, tick == 1 ? 0.65F : 0.9F);
         }
         if (tick % 4 == 0) {
             level.sendParticles(ParticleTypes.EXPLOSION, storm.getX(), storm.getY() + 8, storm.getZ(),
@@ -453,112 +432,23 @@ public final class WitherStormHandler {
                 Component.literal("The Wither Storm has disintegrated. Three Withered Wither Stars remain."), false);
     }
 
-    private static void buildBody(WitherBoss storm) {
-        roundedBody(storm, 0, 5, 5, 10, 9, 8, 0);
-        roundedBody(storm, -16, 3, 2, 7, 7, 7, 1);
-        roundedBody(storm, 16, 3, 2, 7, 7, 7, 2);
-        addPart(storm, Blocks.CRYING_OBSIDIAN, -3, 2, -3.8F, 6, 6, 0.5F, -1, 0);
-        for (int side : new int[] {-1, 1}) {
-            int group = side < 0 ? 1 : 2;
-            for (int segment = 0; segment < 5; segment++) {
-                float x = side * (8.5F + segment * 1.7F);
-                addPart(storm, Blocks.BLACK_CONCRETE, x - 1.6F, 5.0F - segment * 0.3F, 3.0F,
-                        3.2F, 3.0F, 3.4F, -1, group);
-            }
-        }
-        for (int i = 0; i < HEADS.length; i++) {
-            HeadSpec spec = HEADS[i];
-            float x = (float) spec.x;
-            float y = (float) spec.y;
-            float z = (float) spec.z;
-            addPart(storm, Blocks.BLACK_CONCRETE, x - 2.5F, y - 2.5F, z - 2.5F, 5, 5, 5, i, spec.group);
-            addPart(storm, Blocks.BLACK_CONCRETE, x - 1.9F, y - 1.9F, z - 3.1F, 3.8F, 3.8F, 0.8F, i, spec.group);
-            addPart(storm, Blocks.PURPLE_STAINED_GLASS, x - 1.6F, y + 0.7F, z - 3.2F,
-                    0.8F, 0.8F, 0.25F, i, spec.group);
-            addPart(storm, Blocks.PURPLE_STAINED_GLASS, x + 0.8F, y + 0.7F, z - 3.2F,
-                    0.8F, 0.8F, 0.25F, i, spec.group);
-            addPart(storm, Blocks.CRYING_OBSIDIAN, x - 1.2F, y - 1.4F, z - 3.3F,
-                    2.4F, 1.2F, 0.3F, i, spec.group);
-        }
-        for (int group = 0; group < 3; group++) {
-            float rootX = group == 0 ? 0 : group == 1 ? -16 : 16;
-            float rootY = group == 0 ? 0 : -1;
-            for (int side : new int[] {-1, 1}) {
-                for (int front : new int[] {-1, 1}) {
-                    for (int segment = 0; segment < 8; segment++) {
-                        float width = Math.max(0.55F, 2.6F - segment * 0.28F);
-                        float x = rootX + side * (4.0F + segment * 1.15F);
-                        float y = rootY - segment * 1.25F;
-                        float z = front * (3.0F + segment * 0.85F);
-                        addPart(storm, Blocks.BLACK_CONCRETE, x - width / 2, y - width / 2, z - width / 2,
-                                width, width, width, -1, group);
-                    }
-                }
-            }
-        }
-    }
-
-    private static void roundedBody(WitherBoss storm, float x, float y, float z,
-                                    float rx, float ry, float rz, int group) {
-        for (int layer = -3; layer <= 3; layer++) {
-            float factor = (float) Math.sqrt(1.0 - Math.pow(layer / 4.0, 2));
-            float width = rx * 2 * factor;
-            float depth = rz * 2 * factor;
-            addPart(storm, Blocks.BLACK_CONCRETE, x - width / 2, y + layer * ry / 4 - ry / 8,
-                    z - depth / 2, width, ry / 4 + 0.12F, depth, -1, group);
-        }
-    }
-
-    private static void addPart(WitherBoss storm, net.minecraft.world.level.block.Block block,
-                                float x, float y, float z, float sx, float sy, float sz, int head, int group) {
-        ServerLevel level = (ServerLevel) storm.level();
-        CompoundTag nbt = new CompoundTag();
-        CompoundTag blockState = new CompoundTag();
-        blockState.putString("Name", BuiltInRegistries.BLOCK.getKey(block).toString());
-        nbt.put("block_state", blockState);
-        CompoundTag transform = new CompoundTag();
-        transform.put("translation", vector(x, y, z));
-        transform.put("scale", vector(sx, sy, sz));
-        transform.put("left_rotation", quaternionIdentity());
-        transform.put("right_rotation", quaternionIdentity());
-        nbt.put("transformation", transform);
-        nbt.putFloat("view_range", 256.0F);
-        try {
-            Entity display = SummonCommand.createEntity(level.getServer().createCommandSourceStack(),
-                    BuiltInRegistries.ENTITY_TYPE.get(BuiltInRegistries.ENTITY_TYPE.getKey(EntityType.BLOCK_DISPLAY)).orElseThrow(),
-                    storm.position(), nbt, false);
-            display.getPersistentData().putBoolean(PART, true);
-            display.getPersistentData().putString(OWNER, storm.getUUID().toString());
-            display.getPersistentData().putInt(HEAD, head);
-            display.getPersistentData().putInt(GROUP, group);
-            display.startRiding(storm, true, true);
-        } catch (Exception exception) {
-            LOGGER.error("Could not create Wither Storm display", exception);
-        }
-    }
-
     private static void cleanupParts(WitherBoss storm) {
         ServerLevel level = (ServerLevel) storm.level();
         for (Entity entity : List.copyOf(storm.getPassengers())) {
             entity.discard();
         }
+        List<Entity> staleParts = new ArrayList<>();
         for (Entity entity : level.getAllEntities()) {
             if (entity != null && entity.getPersistentData().getBooleanOr(PART, false)
                     && entity.getPersistentData().getStringOr(OWNER, "").equals(storm.getUUID().toString())) {
-                entity.discard();
+                staleParts.add(entity);
             }
         }
+        staleParts.forEach(Entity::discard);
     }
 
     private static Vec3 headPosition(WitherBoss storm, HeadSpec spec) {
-        return storm.position().add(spec.x, spec.y, spec.z);
-    }
-
-    private static void tractorBeam(ServerLevel level, Vec3 mouth, Vec3 ground) {
-        purpleBeam(level, mouth, ground, 0.65);
-        for (int side : new int[] {-1, 1}) {
-            purpleBeam(level, mouth.add(side * 0.8, 0, 0), ground.add(side * 2.4, 0, 0), 1.3);
-        }
+        return storm.position().add(spec.x(), spec.y(), spec.z());
     }
 
     private static ServerPlayer nearestSurvivalPlayer(ServerLevel level, Vec3 point, double radius) {
@@ -577,20 +467,6 @@ public final class WitherStormHandler {
         return nearest;
     }
 
-    private static void purpleBeam(ServerLevel level, Vec3 start, Vec3 end, double spacing) {
-        Vec3 delta = end.subtract(start);
-        double length = delta.length();
-        if (length < 0.1) {
-            return;
-        }
-        Vec3 direction = delta.scale(1.0 / length);
-        for (double step = 0; step <= Math.min(length, 65.0); step += spacing) {
-            Vec3 point = start.add(direction.scale(step));
-            level.sendParticles(ParticleTypes.REVERSE_PORTAL, point.x, point.y, point.z,
-                    1, 0.12, 0.12, 0.12, 0.0);
-        }
-    }
-
     private static WitherBoss findStorm(net.minecraft.server.MinecraftServer server) {
         for (ServerLevel level : server.getAllLevels()) {
             for (Entity entity : level.getAllEntities()) {
@@ -604,23 +480,6 @@ public final class WitherStormHandler {
 
     private static boolean isStorm(Entity entity) {
         return entity.getPersistentData().getBooleanOr(MARKER, false);
-    }
-
-    private static ListTag vector(float x, float y, float z) {
-        ListTag values = new ListTag();
-        values.add(FloatTag.valueOf(x));
-        values.add(FloatTag.valueOf(y));
-        values.add(FloatTag.valueOf(z));
-        return values;
-    }
-
-    private static ListTag quaternionIdentity() {
-        ListTag values = new ListTag();
-        values.add(FloatTag.valueOf(0));
-        values.add(FloatTag.valueOf(0));
-        values.add(FloatTag.valueOf(0));
-        values.add(FloatTag.valueOf(1));
-        return values;
     }
 
     private WitherStormHandler() {}

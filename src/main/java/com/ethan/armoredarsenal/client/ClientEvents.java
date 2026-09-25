@@ -63,6 +63,7 @@ public final class ClientEvents {
     @SubscribeEvent
     public static void clientTick(ClientTickEvent.Post event) {
         ClientLaserBeams.clientTick(event);
+        ClientStormGeometry.clientTick(event);
         StormDeathLayer.tick();
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.player == null || minecraft.screen != null) {
@@ -80,11 +81,13 @@ public final class ClientEvents {
     @SubscribeEvent
     public static void extractLaserBeams(ExtractLevelRenderStateEvent event) {
         ClientLaserBeams.extract(event);
+        ClientStormGeometry.extract(event);
     }
 
     @SubscribeEvent
     public static void submitLaserBeams(SubmitCustomGeometryEvent event) {
         ClientLaserBeams.submit(event);
+        ClientStormGeometry.submit(event);
     }
 
     private ClientEvents() {}

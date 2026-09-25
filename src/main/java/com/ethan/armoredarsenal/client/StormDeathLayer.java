@@ -27,36 +27,49 @@ public final class StormDeathLayer implements GuiLayer {
             return;
         }
         int elapsed = total - remaining;
-        int opacity = Math.min(255, elapsed * 13);
-        if (remaining < 20) {
-            opacity = Math.min(opacity, remaining * 13);
+        int opacity = Math.min(245, elapsed * 18);
+        if (remaining < 12) {
+            opacity = Math.min(opacity, remaining * 21);
         }
         int width = graphics.guiWidth();
         int height = graphics.guiHeight();
         graphics.fill(0, 0, width, height, (opacity << 24) | 0xFFFFFF);
-        if (elapsed < 12 || remaining < 13) {
+        if (elapsed < 10 || remaining < 12) {
             return;
         }
-        int size = Math.max(30, Math.min(width / 5, height / 3));
-        int cy = height / 2;
+        int radius = Math.max(22, Math.min(width / 10, height / 4));
+        int cy = height / 2 - radius / 5;
+        double opening = Math.min(1.0, Math.max(0.0, (elapsed - 14) / 42.0));
+        double fall = elapsed > 56 ? (elapsed - 56) * (elapsed - 56) * 0.12 : 0.0;
         for (int side : new int[] {-1, 1}) {
-            int cx = width / 2 + side * (size / 2 + 12);
-            int left = cx - size / 2;
-            int top = cy - size / 2;
-            graphics.fill(left, top, left + size, top + size, 0xFF111016);
-            int eyeY = top + size / 3;
-            int eyeSize = Math.max(3, size / 10);
+            int cx = width / 2 + side * (radius + Math.max(12, radius / 3));
+            int headY = cy + (int) fall;
+            disc(graphics, cx, headY, radius, radius, 0xFF101015);
+            disc(graphics, cx, headY - radius / 6, radius * 4 / 5, radius * 3 / 4, 0xFF17151C);
+            int eyeY = headY - radius / 3;
+            int eyeSize = Math.max(4, radius / 7);
             for (int eye : new int[] {-1, 1}) {
-                int ex = cx + eye * size / 4;
-                graphics.fill(ex - eyeSize, eyeY - eyeSize, ex + eyeSize, eyeY + eyeSize, 0xFFE5D8F4);
+                int ex = cx + eye * radius / 2;
+                disc(graphics, ex, eyeY, eyeSize + 2, eyeSize + 2, 0xFFB786E4);
                 for (int pixel = -eyeSize; pixel <= eyeSize; pixel++) {
-                    graphics.fill(ex + pixel, eyeY + pixel, ex + pixel + 1, eyeY + pixel + 1, 0xFF111016);
-                    graphics.fill(ex + pixel, eyeY - pixel, ex + pixel + 1, eyeY - pixel + 1, 0xFF111016);
+                    graphics.fill(ex + pixel - 1, eyeY + pixel - 1,
+                            ex + pixel + 2, eyeY + pixel + 2, 0xFF0A0710);
+                    graphics.fill(ex + pixel - 1, eyeY - pixel - 1,
+                            ex + pixel + 2, eyeY - pixel + 2, 0xFF0A0710);
                 }
             }
-            int mouthHeight = Math.max(4, Math.min(size / 3, (elapsed - 12) * size / 75));
-            graphics.fill(cx - size / 4, top + size * 2 / 3,
-                    cx + size / 4, top + size * 2 / 3 + mouthHeight, 0xFFEEE7F8);
+            int mouthHeight = Math.max(3, (int) (radius * (0.13 + opening * 0.42)));
+            int mouthY = headY + radius / 3;
+            disc(graphics, cx, mouthY, radius * 3 / 5, mouthHeight + 3, 0xFF8555B5);
+            disc(graphics, cx, mouthY, radius / 2, mouthHeight, 0xFF040308);
+        }
+    }
+
+    private static void disc(GuiGraphicsExtractor graphics, int cx, int cy, int rx, int ry, int color) {
+        for (int y = -ry; y <= ry; y++) {
+            double fraction = 1.0 - (double) y * y / (ry * ry);
+            int halfWidth = (int) Math.round(rx * Math.sqrt(Math.max(0.0, fraction)));
+            graphics.fill(cx - halfWidth, cy + y, cx + halfWidth + 1, cy + y + 1, color);
         }
     }
 }

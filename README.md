@@ -35,7 +35,7 @@ Download the latest mod and friend installation pack from [GitHub Releases](http
 
 - Mark 15-inspired powered armor using original mod assets.
 - Original Infinity Armor with cosmic visuals, flight, environmental protection, self-repair, and an energy-powered shield.
-- Nine-headed Wither Storm with a rounded main body, two separate three-head bodies, black tentacles, purple tractor beams, an enterable core chamber, a Command Block Axe finish, and Withered Beacon reward. Fly into the front of any head to enter; the beams do not pull players in. The two outer bodies fall during the death sequence while the center disintegrates. Summon with `/witherstorm`; get the axe with `/witherstorm axe`.
+- Nine-headed Wither Storm with an original smooth black model, two separate three-head bodies, animated tentacles, and continuous purple tractor beams on both sides. Fly into any head to enter the core; two guardian heads and tentacles defend the command block. The side bodies fall during the death sequence while the center breaks apart. Summon with `/witherstorm`; get the Command Block Axe with `/witherstorm axe`.
 - Full-suit flight/hover, fall protection, stealth, night vision, and repulsor firing.
 - Laser rifle, pulse pistol, beam cannon, and charged sniper laser.
 - Wooden-axe WorldEdit selection with safe `/worldedit` and `/we` fill commands.

@@ -1,10 +1,12 @@
 package com.ethan.armoredarsenal;
 
 import com.ethan.armoredarsenal.client.ClientLaserBeams;
+import com.ethan.armoredarsenal.client.ClientStormGeometry;
 import com.ethan.armoredarsenal.client.ClientTransformationState;
 import com.ethan.armoredarsenal.network.LaserBeamPayload;
 import com.ethan.armoredarsenal.network.TransformationPayload;
 import com.ethan.armoredarsenal.network.StormDeathPayload;
+import com.ethan.armoredarsenal.network.StormVisualPayload;
 import com.ethan.armoredarsenal.registry.ModCreativeTabs;
 import com.ethan.armoredarsenal.registry.ModBlocks;
 import com.ethan.armoredarsenal.registry.ModItems;
@@ -84,6 +86,10 @@ public final class ArmoredArsenal {
                 StormDeathPayload.TYPE,
                 StormDeathPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> com.ethan.armoredarsenal.client.StormDeathLayer.start(payload)));
+        registrar.playToClient(
+                StormVisualPayload.TYPE,
+                StormVisualPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> ClientStormGeometry.accept(payload)));
     }
 
     public static Identifier id(String path) {
