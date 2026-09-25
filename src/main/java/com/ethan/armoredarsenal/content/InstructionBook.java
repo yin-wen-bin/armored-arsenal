@@ -224,7 +224,7 @@ public final class InstructionBook {
 
                         Type /witherstorm or chat message witherstorm to summon the nine-headed boss.
 
-                        Fly into the front of any smooth black head to enter the core chamber. Two purple tractor beams shine from the side bodies, but do not pull you in. Creative players can enter safely.
+                        Fly into the front of any rounded black head to enter the core chamber. The storm is built from small blocks. Two purple tractor beams shine from the side bodies, but do not pull you in. Creative players can enter safely.
 
                         The two inner heads and black tentacles guard the command block core. Craft a Command Block Axe or type /witherstorm axe. Hit the core once with it to trigger the death sequence.
 

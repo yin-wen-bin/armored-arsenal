@@ -66,10 +66,13 @@ public final class StormDeathLayer implements GuiLayer {
     }
 
     private static void disc(GuiGraphicsExtractor graphics, int cx, int cy, int rx, int ry, int color) {
-        for (int y = -ry; y <= ry; y++) {
-            double fraction = 1.0 - (double) y * y / (ry * ry);
-            int halfWidth = (int) Math.round(rx * Math.sqrt(Math.max(0.0, fraction)));
-            graphics.fill(cx - halfWidth, cy + y, cx + halfWidth + 1, cy + y + 1, color);
+        int block = Math.max(2, rx / 18);
+        for (int y = -ry; y <= ry; y += block) {
+            double sampleY = Math.min(ry, y + block * 0.5);
+            double fraction = 1.0 - sampleY * sampleY / (ry * ry);
+            int halfWidth = (int) (Math.round(rx * Math.sqrt(Math.max(0.0, fraction)) / block) * block);
+            graphics.fill(cx - halfWidth, cy + y,
+                    cx + halfWidth + block, cy + Math.min(ry + 1, y + block), color);
         }
     }
 }
