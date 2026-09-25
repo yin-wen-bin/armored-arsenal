@@ -54,6 +54,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 
 public final class TransformationHandler {
     private static final String DATA_KEY = "ArmoredArsenalTransformation";
+    private static final String BEACON_FORM = "ArmoredArsenalMiniWitherStorm";
     private static final Map<UUID, Long> POWER_COOLDOWNS = new HashMap<>();
     private static final Map<EntityType<?>, TransformationTraits> TRAIT_CACHE = new HashMap<>();
     private static final SuggestionProvider<CommandSourceStack> MOB_SUGGESTIONS = (context, builder) ->
@@ -741,6 +742,24 @@ public final class TransformationHandler {
         if (player.tickCount % 100 == 0) sync(player, selected);
     }
 
+    public static void applyBeaconForm(ServerPlayer player) {
+        if (player.getPersistentData().getBooleanOr(BEACON_FORM, false)
+                && player.getPersistentData().getStringOr(DATA_KEY, "").equals("minecraft:wither")) {
+            return;
+        }
+        player.getPersistentData().putBoolean(BEACON_FORM, true);
+        player.getPersistentData().putString(DATA_KEY, "minecraft:wither");
+        sync(player, "minecraft:wither");
+        applyPowers(player, EntityType.WITHER);
+    }
+
+    public static void clearBeaconForm(ServerPlayer player) {
+        if (player.getPersistentData().getBooleanOr(BEACON_FORM, false)) {
+            player.getPersistentData().remove(BEACON_FORM);
+            clearSilently(player);
+        }
+    }
+
     private static int transform(ServerPlayer player, String rawName) {
         EntityType<?> type = findType(rawName);
         if (type == null) {
@@ -869,7 +888,10 @@ public final class TransformationHandler {
     }
 
     private static void sync(ServerPlayer player, String entityType) {
-        PacketDistributor.sendToAllPlayers(new TransformationPayload(player.getId(), entityType));
+        String visual = player.getPersistentData().getBooleanOr(BEACON_FORM, false)
+                && entityType.equals("minecraft:wither")
+                ? "armoredarsenal:mini_wither_storm" : entityType;
+        PacketDistributor.sendToAllPlayers(new TransformationPayload(player.getId(), visual));
     }
 
     private static String displayName(String id) {

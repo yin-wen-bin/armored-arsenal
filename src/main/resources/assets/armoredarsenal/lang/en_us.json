@@ -114,5 +114,8 @@
     "block.armoredarsenal.green_trampoline": "Green Trampoline",
     "block.armoredarsenal.red_trampoline": "Red Trampoline",
     "block.armoredarsenal.black_trampoline": "Black Trampoline",
-    "block.armoredarsenal.water_slide_surface": "Water Slide Surface"
+    "block.armoredarsenal.water_slide_surface": "Water Slide Surface",
+    "item.armoredarsenal.command_block_axe": "Command Block Axe",
+    "item.armoredarsenal.withered_wither_star": "Withered Wither Star",
+    "block.armoredarsenal.withered_beacon": "Withered Beacon"
 }

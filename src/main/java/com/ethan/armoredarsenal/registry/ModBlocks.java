@@ -43,6 +43,9 @@ public final class ModBlocks {
             "arcanite_ore", properties -> new net.minecraft.world.level.block.DropExperienceBlock(
                     net.minecraft.util.valueproviders.UniformInt.of(4, 8), properties),
             () -> BlockBehaviour.Properties.of().strength(4.5F, 6.0F).requiresCorrectToolForDrops().sound(SoundType.STONE));
+    public static final DeferredBlock<net.minecraft.world.level.block.Block> WITHERED_BEACON = BLOCKS.registerSimpleBlock(
+            "withered_beacon",
+            () -> BlockBehaviour.Properties.of().strength(6.0F, 1200.0F).sound(SoundType.STONE).lightLevel(state -> 12));
     public static final DeferredBlock<FloorFurnitureBlock> KITCHEN_COUNTER = BLOCKS.registerBlock(
             "kitchen_counter", FloorFurnitureBlock::new,
             () -> BlockBehaviour.Properties.of().strength(2.5F).sound(SoundType.WOOD));

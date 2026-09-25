@@ -49,6 +49,13 @@ public final class ModItems {
     public static final DeferredItem<BlockItem> ARCANITE_ORE =
             ITEMS.registerSimpleBlockItem("arcanite_ore", ModBlocks.ARCANITE_ORE);
     public static final DeferredItem<Item> ARCANITE = ITEMS.registerSimpleItem("arcanite");
+    public static final DeferredItem<Item> WITHERED_WITHER_STAR = ITEMS.registerItem(
+            "withered_wither_star", properties -> new Item(properties.rarity(Rarity.EPIC).stacksTo(16)));
+    public static final DeferredItem<Item> COMMAND_BLOCK_AXE = ITEMS.registerItem(
+            "command_block_axe", properties -> new Item(properties.axe(
+                    ArmoredArmorMaterials.ARCANITE_TOOL, 8.0F, -2.8F).rarity(Rarity.EPIC)));
+    public static final DeferredItem<BlockItem> WITHERED_BEACON =
+            ITEMS.registerSimpleBlockItem("withered_beacon", ModBlocks.WITHERED_BEACON);
     public static final DeferredItem<Item> ARCANITE_SWORD = ITEMS.registerItem(
             "arcanite_sword", properties -> new Item(properties.sword(ArmoredArmorMaterials.ARCANITE_TOOL, 3.5F, -2.3F)));
     public static final DeferredItem<Item> ARCANITE_PICKAXE = ITEMS.registerItem(

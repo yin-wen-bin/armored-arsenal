@@ -14,6 +14,8 @@ public final class ArmoredEvents {
             TransformationHandler.tick(player);
             VillagePopulationHandler.tick(player);
             WaterSlideTools.tickSliding(player);
+            WitherStormHandler.playerTick(player);
+            StormBeaconHandler.playerTick(player);
         }
     }
 

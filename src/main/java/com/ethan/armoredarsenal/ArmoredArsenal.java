@@ -4,6 +4,7 @@ import com.ethan.armoredarsenal.client.ClientLaserBeams;
 import com.ethan.armoredarsenal.client.ClientTransformationState;
 import com.ethan.armoredarsenal.network.LaserBeamPayload;
 import com.ethan.armoredarsenal.network.TransformationPayload;
+import com.ethan.armoredarsenal.network.StormDeathPayload;
 import com.ethan.armoredarsenal.registry.ModCreativeTabs;
 import com.ethan.armoredarsenal.registry.ModBlocks;
 import com.ethan.armoredarsenal.registry.ModItems;
@@ -22,6 +23,7 @@ import com.ethan.armoredarsenal.server.WorldEditTools;
 import com.ethan.armoredarsenal.server.ThrowEnchantHandler;
 import com.ethan.armoredarsenal.server.WaterFloodTntHandler;
 import com.ethan.armoredarsenal.server.WitherStormHandler;
+import com.ethan.armoredarsenal.server.StormBeaconHandler;
 import net.minecraft.resources.Identifier;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
@@ -61,6 +63,10 @@ public final class ArmoredArsenal {
         NeoForge.EVENT_BUS.addListener(ThrowEnchantHandler::projectileImpact);
         NeoForge.EVENT_BUS.addListener(RocketLogic::beforeEntityTick);
         NeoForge.EVENT_BUS.addListener(WitherStormHandler::afterEntityTick);
+        NeoForge.EVENT_BUS.addListener(WitherStormHandler::incomingDamage);
+        NeoForge.EVENT_BUS.addListener(WitherStormHandler::coreStrike);
+        NeoForge.EVENT_BUS.addListener(StormBeaconHandler::blockPlaced);
+        NeoForge.EVENT_BUS.addListener(StormBeaconHandler::blockBroken);
         NeoForge.EVENT_BUS.addListener(ArsenalDimensionHandler::chunkLoaded);
     }
 
@@ -74,6 +80,10 @@ public final class ArmoredArsenal {
                 LaserBeamPayload.TYPE,
                 LaserBeamPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> ClientLaserBeams.accept(payload)));
+        registrar.playToClient(
+                StormDeathPayload.TYPE,
+                StormDeathPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> com.ethan.armoredarsenal.client.StormDeathLayer.start(payload)));
     }
 
     public static Identifier id(String path) {

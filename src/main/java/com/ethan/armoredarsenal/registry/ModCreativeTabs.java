@@ -28,6 +28,9 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.INFINITY_CHESTPLATE.get());
                         output.accept(ModItems.INFINITY_LEGGINGS.get());
                         output.accept(ModItems.INFINITY_BOOTS.get());
+                        output.accept(ModItems.COMMAND_BLOCK_AXE.get());
+                        output.accept(ModItems.WITHERED_WITHER_STAR.get());
+                        output.accept(ModItems.WITHERED_BEACON.get());
                         output.accept(ModItems.ARCANITE_ORE.get());
                         output.accept(ModItems.ARCANITE.get());
                         output.accept(ModItems.BEDROCK_ARCANITE.get());

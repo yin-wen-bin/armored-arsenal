@@ -222,11 +222,13 @@ public final class InstructionBook {
                         """),                page("""
                         Wither Storm
 
-                        Type /witherstorm or chat message witherstorm to summon the giant three-phase boss.
+                        Type /witherstorm or chat message witherstorm to summon the nine-headed boss.
 
-                        Its gravity pull and minion waves grow stronger as its health falls.
+                        Fly into any head to enter the core chamber. The purple beams do not pull you in. Creative players can enter, but the storm will not attack them.
 
-                        Type /witherstorm clear to remove it in an emergency. It is destructive, so summon it far from important builds.
+                        The two inner heads and black tentacles guard the command block core. Craft a Command Block Axe or type /witherstorm axe. Hit the core once with it to trigger the death sequence.
+
+                        Three Withered Wither Stars drop. Craft a Withered Beacon to become a mini storm while the beacon stands. Breaking it turns you back. /witherstorm clear removes the boss.
                         """),                page("""
                         Quick Start
 

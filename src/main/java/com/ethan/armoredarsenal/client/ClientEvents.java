@@ -36,6 +36,8 @@ public final class ClientEvents {
         event.registerAbove(VanillaGuiLayers.SELECTED_ITEM_NAME, ArmoredArsenal.id("suit_hud"), new SuitHudLayer());
         event.registerAbove(VanillaGuiLayers.BOSS_OVERLAY, ArmoredArsenal.id("warden_megaboss_hud"),
                 new WardenMegabossHudLayer());
+        event.registerAbove(VanillaGuiLayers.SELECTED_ITEM_NAME, ArmoredArsenal.id("storm_death"),
+                new StormDeathLayer());
     }
 
     @SubscribeEvent
@@ -61,6 +63,7 @@ public final class ClientEvents {
     @SubscribeEvent
     public static void clientTick(ClientTickEvent.Post event) {
         ClientLaserBeams.clientTick(event);
+        StormDeathLayer.tick();
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.player == null || minecraft.screen != null) {
             slideKeyWasDown = false;
