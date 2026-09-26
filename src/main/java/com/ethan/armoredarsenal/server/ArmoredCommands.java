@@ -48,6 +48,7 @@ public final class ArmoredCommands {
         }));
 
         WorldEditTools.registerCommands(dispatcher);
+        ColossusGolemHandler.registerCommands(dispatcher);
         TransformationHandler.registerCommands(dispatcher);
         WaterSlideTools.registerCommands(dispatcher);
         ThrowEnchantHandler.registerCommands(dispatcher);

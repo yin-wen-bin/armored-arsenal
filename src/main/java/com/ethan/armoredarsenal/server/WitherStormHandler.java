@@ -58,6 +58,7 @@ public final class WitherStormHandler {
     private static final BlockPos CORE = new BlockPos(250000, 121, 8);
     private static final BlockPos ARRIVAL = new BlockPos(250000, 121, -7);
     private static final BlockPos CORE_ROOM_MARKER = CORE.offset(15, 5, 0);
+    private static final BlockPos CORE_TENTACLE_MARKER = CORE.offset(-15, 5, 0);
     private static final Map<UUID, Vec3> LAST_EYE = new ConcurrentHashMap<>();
 
     public static void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher) {
@@ -269,7 +270,7 @@ public final class WitherStormHandler {
         player.level().playSound(null, CORE, SoundEvents.WITHER_DEATH, SoundSource.HOSTILE, 4.0F, 0.55F);
         for (ServerPlayer visitor : player.level().getServer().getPlayerList().getPlayers()) {
             if (visitor.getPersistentData().getBooleanOr(INSIDE, false)) {
-                PacketDistributor.sendToPlayer(visitor, new StormDeathPayload(90));
+                PacketDistributor.sendToPlayer(visitor, new StormDeathPayload(64));
             }
         }
     }
@@ -307,7 +308,8 @@ public final class WitherStormHandler {
             return;
         }
         int deathTicks = storm.getPersistentData().getIntOr(DEATH_TICKS, 0);
-        if (deathTicks == 0 && !player.level().getBlockState(CORE_ROOM_MARKER).is(Blocks.REINFORCED_DEEPSLATE)) {
+        if (deathTicks == 0 && (!player.level().getBlockState(CORE_ROOM_MARKER).is(Blocks.REINFORCED_DEEPSLATE)
+                || !player.level().getBlockState(CORE_TENTACLE_MARKER).is(Blocks.CRYING_OBSIDIAN))) {
             buildCoreRoom(player.level());
         }
         if (player.tickCount % 5 == 0) {
@@ -317,7 +319,7 @@ public final class WitherStormHandler {
                     deathTicks, true));
         }
         if (deathTicks > 0) {
-            if (deathTicks >= 70) {
+            if (deathTicks >= 52) {
                 leaveCore(player);
             }
             return;
@@ -378,26 +380,40 @@ public final class WitherStormHandler {
                 BlockPos base = CORE.offset(side * 11, 0, front * 7);
                 level.setBlock(base, Blocks.CRYING_OBSIDIAN.defaultBlockState(), 2);
                 level.setBlock(base.above(), Blocks.BLACK_CONCRETE.defaultBlockState(), 2);
+                for (int step = 0; step < 8; step++) {
+                    double progress = (step + 1) / 8.0;
+                    int x = CORE.getX() + side * (11 - (int)Math.round(progress * 7.0));
+                    int y = CORE.getY() + 1 + (int)Math.round(Math.sin(progress * Math.PI) * 3.0) - step / 4;
+                    int z = CORE.getZ() + front * (7 - (int)Math.round(progress * 5.0));
+                    BlockPos tentacle = new BlockPos(x, y, z);
+                    if (!tentacle.equals(CORE) && !tentacle.equals(ARRIVAL)) {
+                        level.setBlock(tentacle, step % 3 == 0 ? Blocks.CRYING_OBSIDIAN.defaultBlockState()
+                                : Blocks.BLACK_CONCRETE.defaultBlockState(), 2);
+                    }
+                }
             }
         }
         level.setBlock(CORE.below(), Blocks.CRYING_OBSIDIAN.defaultBlockState(), 2);
         level.setBlockAndUpdate(CORE, Blocks.COMMAND_BLOCK.defaultBlockState());
         level.setBlock(CORE_ROOM_MARKER, Blocks.REINFORCED_DEEPSLATE.defaultBlockState(), 2);
+        level.setBlock(CORE_TENTACLE_MARKER, Blocks.CRYING_OBSIDIAN.defaultBlockState(), 2);
     }
 
     private static void tickDeath(ServerLevel level, WitherBoss storm, int tick) {
         storm.getPersistentData().putInt(DEATH_TICKS, tick + 1);
-        if (tick == 1 || tick == 45) {
+        if (tick == 1 || tick == 48 || tick == 96) {
             level.playSound(null, storm.blockPosition(), SoundEvents.WITHER_DEATH,
                     SoundSource.HOSTILE, tick == 1 ? 4.0F : 2.0F, tick == 1 ? 0.65F : 0.9F);
         }
-        if (tick % 4 == 0) {
+        if (tick >= 96 && tick % 3 == 0) {
             level.sendParticles(ParticleTypes.EXPLOSION, storm.getX(), storm.getY() + 8, storm.getZ(),
-                    8, 12.0, 10.0, 10.0, 0.08);
+                    4, 12.0, 10.0, 10.0, 0.05);
             level.sendParticles(ParticleTypes.LARGE_SMOKE, storm.getX(), storm.getY() + 8, storm.getZ(),
-                    40, 14.0, 10.0, 12.0, 0.06);
+                    28, 14.0, 10.0, 12.0, 0.04);
+            level.sendParticles(ParticleTypes.WITCH, storm.getX(), storm.getY() + 8, storm.getZ(),
+                    22, 11.0, 9.0, 10.0, 0.10);
         }
-        if (tick >= 90) {
+        if (tick >= 200) {
             finishDeath(level, storm);
         }
     }
@@ -416,8 +432,8 @@ public final class WitherStormHandler {
         }
         ServerPlayer victor = winner == null ? null : level.getServer().getPlayerList().getPlayer(winner);
         if (victor != null) {
-            victor.giveExperienceLevels(10_000_000);
-            victor.sendSystemMessage(Component.literal("The storm's XP exceeds Minecraft's numeric limit. Awarded ten million usable levels."), false);
+            victor.giveExperienceLevels(9);
+            victor.sendSystemMessage(Component.literal("The Wither Storm leaves behind nine experience levels."), false);
         }
         for (int i = 0; i < 3; i++) {
             net.minecraft.world.entity.item.ItemEntity item = new net.minecraft.world.entity.item.ItemEntity(

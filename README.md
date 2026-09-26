@@ -18,6 +18,7 @@ Download the latest mod and friend installation pack from [GitHub Releases](http
 - `/guns` or chat message `guns`: opens the laser weapon selector.
 - `/items`: opens the survival-safe item supply menu.
 - `/witherstorm` or chat message `witherstorm`: summons the three-phase boss. `/witherstorm clear` removes it.
+- `/golem inspect`: previews the nearby mixed diamond-and-netherite head/pumpkin structure that can become a colossus. `/golem awaken`: confirms and brings that exact structure to life.
 - `/manual`, `/guide`, or chat messages `manual`, `guide`, `book`: gives the in-game instruction book.
 - Chat message `give ethan0315 bedrock`: gives the player two stacks of bedrock.
 - `/wand`: gives a wooden axe for WorldEdit selection. Right-click two opposite corners.
@@ -35,11 +36,12 @@ Download the latest mod and friend installation pack from [GitHub Releases](http
 
 - Mark 15-inspired powered armor using original mod assets.
 - Original Infinity Armor with cosmic visuals, flight, environmental protection, self-repair, and an energy-powered shield.
-- Original nine-headed storm inspired by the late-stage encounter in Cracker's Wither Storm Mod. Rounded silhouettes are built from small black cubes across a main body and two separate three-head bodies, with block-built tentacles and continuous purple tractor beams on both sides. Fly into any head to enter the core; two guardian heads and tentacles defend the command block. The side bodies fall during the death sequence while the center breaks apart. Summon with `/witherstorm`; get the Command Block Axe with `/witherstorm axe`. This is not Cracker's mod or an exact recreation of its models and progression.
+- Original nine-headed storm inspired by the late-stage encounter in Cracker's Wither Storm Mod. Its block-built heads have square jaws, visible teeth, and opening mouths. On death, the heads vanish into a white-out, players are ejected, the two side bodies drop into the void, the body hole seals, then the main body slowly disintegrates in purple light. Three Withered Wither Stars and exactly 9 experience levels remain. Physical black tentacles and two guardian heads defend the command block. Summon with `/witherstorm`; get the Command Block Axe with `/witherstorm axe`. This is not Cracker's mod or an exact recreation of its models and progression.
 - Full-suit flight/hover, fall protection, stealth, night vision, and repulsor firing.
 - Laser rifle, pulse pistol, beam cannon, and charged sniper laser.
 - Wooden-axe WorldEdit selection with safe `/worldedit` and `/we` fill commands.
 - Material golems, including a high-health Bedrock Golem, spawned from iron-golem-style block shapes.
+- A mixed Netherite-Diamond Colossus that can animate a large nearby connected structure containing both block types and heads or pumpkins after `/golem inspect` then `/golem awaken`.
 - Synchronized mob transformations with mob-based health, strength, speed, flight, water, fire, and vision powers.
 - Water Flood TNT for quickly filling medium pools without terrain damage.
 - Server-authoritative selection through Minecraft menu button packets.

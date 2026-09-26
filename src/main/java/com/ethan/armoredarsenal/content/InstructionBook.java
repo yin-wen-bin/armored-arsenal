@@ -219,6 +219,8 @@ public final class InstructionBook {
                         Put a carved pumpkin or jack o lantern on top.
 
                         Example: four bedrock blocks make a Bedrock Golem with huge health.
+
+                        A large connected structure made of diamond blocks, netherite blocks, heads, and pumpkins can become a Netherite-Diamond Colossus. Stand near it and type /golem inspect, then /golem awaken to confirm.
                         """),                page("""
                         Wither Storm
 
@@ -228,7 +230,7 @@ public final class InstructionBook {
 
                         The two inner heads and black tentacles guard the command block core. Craft a Command Block Axe or type /witherstorm axe. Hit the core once with it to trigger the death sequence.
 
-                        The two outer three-head bodies fall; the main body breaks apart. Three Withered Wither Stars drop. Craft a Withered Beacon to become a mini storm while it stands. Break it to turn back. /witherstorm clear removes the boss.
+                        When the core breaks, the heads open their square, toothed mouths before the white-out. You are ejected, the two outer bodies fall into the void, the hole seals, and purple light shines as the main body slowly disintegrates. Three Withered Wither Stars and nine levels drop. Craft a Withered Beacon to become a mini storm while it stands. Break it to turn back. /witherstorm clear removes the boss.
                         """),                page("""
                         Quick Start
 

@@ -27,14 +27,14 @@ public final class StormDeathLayer implements GuiLayer {
             return;
         }
         int elapsed = total - remaining;
-        int opacity = Math.min(245, elapsed * 18);
+        int opacity = elapsed < 38 ? Math.min(245, elapsed * 7) : 245;
         if (remaining < 12) {
             opacity = Math.min(opacity, remaining * 21);
         }
         int width = graphics.guiWidth();
         int height = graphics.guiHeight();
         graphics.fill(0, 0, width, height, (opacity << 24) | 0xFFFFFF);
-        if (elapsed < 10 || remaining < 12) {
+        if (elapsed < 6 || elapsed >= 38 || remaining < 12) {
             return;
         }
         int radius = Math.max(22, Math.min(width / 10, height / 4));
@@ -58,10 +58,19 @@ public final class StormDeathLayer implements GuiLayer {
                             ex + pixel + 2, eyeY - pixel + 2, 0xFF0A0710);
                 }
             }
-            int mouthHeight = Math.max(3, (int) (radius * (0.13 + opening * 0.42)));
+            int mouthHeight = Math.max(3, (int) (radius * (0.12 + opening * 0.50)));
             int mouthY = headY + radius / 3;
-            disc(graphics, cx, mouthY, radius * 3 / 5, mouthHeight + 3, 0xFF8555B5);
-            disc(graphics, cx, mouthY, radius / 2, mouthHeight, 0xFF040308);
+            graphics.fill(cx - radius * 3 / 5, mouthY - mouthHeight,
+                    cx + radius * 3 / 5, mouthY + mouthHeight, 0xFF040308);
+            for (int tooth = -2; tooth <= 2; tooth++) {
+                int x = cx + tooth * radius / 4;
+                graphics.fill(x - eyeSize / 2, mouthY - mouthHeight, x + eyeSize / 2,
+                        mouthY - mouthHeight + eyeSize, 0xFFE0D8E8);
+                if (opening > 0.28) {
+                    graphics.fill(x, mouthY + mouthHeight - eyeSize, x + eyeSize,
+                            mouthY + mouthHeight, 0xFFE0D8E8);
+                }
+            }
         }
     }
 

@@ -68,13 +68,13 @@ public final class ClientStormGeometry {
             for (int group = 0; group < 3; group++) {
                 int currentGroup = group;
                 stack.pushPose();
-                if (group == 0 && death > 20) {
-                    float scale = Math.max(0.08F, 1.0F - (death - 20) / 76.0F);
+                if (group == 0 && death > 96) {
+                    float scale = Math.max(0.08F, 1.0F - (death - 96) / 116.0F);
                     stack.translate(0.0, 5.0, 5.0);
                     stack.scale(scale, scale, scale);
                     stack.translate(0.0, -5.0, -5.0);
-                } else if (group != 0 && death > 8) {
-                    float fall = Math.min(45.0F, (death - 8) * (death - 8) * 0.014F);
+                } else if (group != 0 && death > 52) {
+                    float fall = Math.min(180.0F, (death - 52) * (death - 52) * 0.050F);
                     stack.translate((group == 1 ? -1 : 1) * fall * 0.10F, -fall, 0.0);
                 }
                 collector.submitCustomGeometry(stack, RenderTypes.debugQuads(),
@@ -85,7 +85,7 @@ public final class ClientStormGeometry {
                 }
                 stack.popPose();
             }
-            if (death > 18) {
+            if (death > 96) {
                 collector.submitCustomGeometry(stack, RenderTypes.debugQuads(),
                         (pose, buffer) -> renderFragments(pose, buffer, death));
             }
@@ -99,12 +99,17 @@ public final class ClientStormGeometry {
         Vec3 radii = group == 0 ? new Vec3(10, 9, 8) : new Vec3(7, 7, 7);
         voxelEllipsoid(pose, buffer, center, radii, 0xFF202027, group == 0 ? 1.25 : 1.0);
         if (group == 0) {
-            voxelEllipsoid(pose, buffer, new Vec3(0, 4, -3), new Vec3(3.1, 3.1, 0.32),
-                    death > 0 ? 0xFFAD5FF3 : 0xFF45215C, 0.38);
+            if (death < 52) {
+                voxelEllipsoid(pose, buffer, new Vec3(0, 4, -3), new Vec3(3.1, 3.1, 0.32),
+                        death > 0 ? 0xFFAD5FF3 : 0xFF45215C, 0.38);
+            } else if (death < 82) {
+                voxelEllipsoid(pose, buffer, new Vec3(0, 4, -3), new Vec3(3.1, 3.1, 0.32),
+                        0xFF202027, 0.38);
+            }
         }
         for (HeadSpec head : StormShape.HEADS) {
-            if (head.group() == group) {
-                face(pose, buffer, new Vec3(head.x(), head.y(), head.z()), 2.55, age);
+            if (head.group() == group && death < 40) {
+                face(pose, buffer, new Vec3(head.x(), head.y(), head.z()), 2.55, age, death);
             }
         }
         for (int side : new int[] {-1, 1}) {
@@ -124,7 +129,7 @@ public final class ClientStormGeometry {
 
     private static void renderCore(PoseStack.Pose pose, VertexConsumer buffer, int death, int age) {
         for (int side : new int[] {-1, 1}) {
-            face(pose, buffer, new Vec3(side * 6.0, 4.8, 3.5), 2.25, age);
+            face(pose, buffer, new Vec3(side * 6.0, 4.8, 3.5), 2.25, age, death);
             for (int front : new int[] {-1, 1}) {
                 Vec3 previous = new Vec3(side * 9.5, 5.5, 6.0 + front * 2.0);
                 for (int step = 1; step <= 10; step++) {
@@ -141,23 +146,25 @@ public final class ClientStormGeometry {
     }
 
     private static void renderFragments(PoseStack.Pose pose, VertexConsumer buffer, int death) {
-        double progress = Math.min(1.0, (death - 18) / 72.0);
-        for (int piece = 0; piece < 18; piece++) {
+        double progress = Math.min(1.0, (death - 96) / 104.0);
+        for (int piece = 0; piece < 32; piece++) {
             double angle = piece * 2.39996;
             double rise = Math.sin(piece * 1.87);
             double distance = 4.0 + progress * (11.0 + piece % 5 * 2.0);
             Vec3 center = new Vec3(Math.cos(angle) * distance,
                     5.0 + rise * (5.0 + progress * 9.0) - progress * progress * 12.0,
                     5.0 + Math.sin(angle) * distance);
-            double radius = (0.45 + piece % 4 * 0.17) * (1.0 - progress * 0.85);
+            double radius = (0.36 + piece % 5 * 0.14) * (1.0 - progress * 0.75);
             block(pose, buffer, center, radius * 1.8,
-                    piece % 4 == 0 ? 0xFF6E348E : 0xFF17151C);
+                    piece % 3 == 0 ? 0xFF8F55D0 : 0xFF17151C);
         }
     }
 
-    private static void face(PoseStack.Pose pose, VertexConsumer buffer, Vec3 center, double radius, int age) {
-        voxelEllipsoid(pose, buffer, center, new Vec3(radius, radius * 0.9, radius),
+    private static void face(PoseStack.Pose pose, VertexConsumer buffer, Vec3 center, double radius, int age, int death) {
+        voxelEllipsoid(pose, buffer, center, new Vec3(radius * 1.02, radius * 0.74, radius * 0.70),
                 0xFF19181E, 0.50);
+        cuboid(pose, buffer, center.add(0.0, radius * 0.49, -radius * 0.42),
+                radius * 1.55, radius * 0.28, radius * 0.38, 0xFF111016);
         for (int eye : new int[] {-1, 1}) {
             Vec3 eyeCenter = center.add(eye * radius * 0.43, radius * 0.27, -radius * 0.91);
             voxelEllipsoid(pose, buffer, eyeCenter,
@@ -165,11 +172,33 @@ public final class ClientStormGeometry {
             voxelEllipsoid(pose, buffer, eyeCenter.add(0, 0, -radius * 0.15),
                     new Vec3(radius * 0.13, radius * 0.12, radius * 0.08), 0xFFD9A0FF, 0.16);
         }
-        double mouthOpen = age % 20 < 10 ? 0.34 : 0.42;
-        voxelEllipsoid(pose, buffer, center.add(0, -radius * 0.38, -radius * 0.93),
-                new Vec3(radius * 0.50, radius * mouthOpen, radius * 0.18), 0xFF592278, 0.22);
-        voxelEllipsoid(pose, buffer, center.add(0, -radius * 0.38, -radius * 1.08),
-                new Vec3(radius * 0.38, radius * mouthOpen * 0.67, radius * 0.08), 0xFF08050D, 0.18);
+        double mouthOpen = death > 0 ? 0.42 + Math.min(0.62, death * 0.018)
+                : (age % 20 < 10 ? 0.34 : 0.42);
+        Vec3 mouth = center.add(0, -radius * 0.33, -radius * 0.72);
+        cuboid(pose, buffer, mouth, radius * 1.18, mouthOpen * radius, radius * 0.30, 0xFF08050D);
+        for (int tooth = -2; tooth <= 2; tooth++) {
+            double x = tooth * radius * 0.34;
+            cuboid(pose, buffer, mouth.add(x, mouthOpen * radius * 0.38, -radius * 0.19),
+                    radius * 0.13, radius * 0.22, radius * 0.12, 0xFFD8D3E2);
+            if (mouthOpen > 0.45) {
+                cuboid(pose, buffer, mouth.add(x + radius * 0.12, -mouthOpen * radius * 0.40, -radius * 0.19),
+                        radius * 0.11, radius * 0.20, radius * 0.12, 0xFFD8D3E2);
+            }
+        }
+    }
+
+    private static void cuboid(PoseStack.Pose pose, VertexConsumer buffer, Vec3 center,
+                               double width, double height, double depth, int color) {
+        double x0 = center.x - width * 0.5;
+        double y0 = center.y - height * 0.5;
+        double z0 = center.z - depth * 0.5;
+        double x1 = center.x + width * 0.5;
+        double y1 = center.y + height * 0.5;
+        double z1 = center.z + depth * 0.5;
+        double[] light = {0.72, 0.86, 0.58, 1.12, 1.0, 0.80};
+        for (int side = 0; side < 6; side++) {
+            cubeFace(pose, buffer, x0, y0, z0, x1, y1, z1, side, shade(color, light[side]));
+        }
     }
 
     private static void renderTractorCone(PoseStack.Pose pose, VertexConsumer buffer, int group, int age) {

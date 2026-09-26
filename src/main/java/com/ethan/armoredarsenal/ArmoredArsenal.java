@@ -16,6 +16,7 @@ import com.ethan.armoredarsenal.server.ArmoredEvents;
 import com.ethan.armoredarsenal.server.ArsenalDimensionHandler;
 import com.ethan.armoredarsenal.server.BuildableEndPortalHandler;
 import com.ethan.armoredarsenal.server.CouchSittingHandler;
+import com.ethan.armoredarsenal.server.ColossusGolemHandler;
 import com.ethan.armoredarsenal.server.DelayedMinecartHandler;
 import com.ethan.armoredarsenal.server.MaterialGolemHandler;
 import com.ethan.armoredarsenal.server.HopperDripstoneHandler;
@@ -50,6 +51,7 @@ public final class ArmoredArsenal {
         NeoForge.EVENT_BUS.addListener(MaterialGolemHandler::blockPlaced);
         NeoForge.EVENT_BUS.addListener(MaterialGolemHandler::incomingDamage);
         NeoForge.EVENT_BUS.addListener(MaterialGolemHandler::afterEntityTick);
+        NeoForge.EVENT_BUS.addListener(ColossusGolemHandler::afterEntityTick);
         NeoForge.EVENT_BUS.addListener(BuildableEndPortalHandler::rightClickBlock);
         NeoForge.EVENT_BUS.addListener(HopperDripstoneHandler::rightClickBlock);
         NeoForge.EVENT_BUS.addListener(CouchSittingHandler::rightClickBlock);
